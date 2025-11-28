@@ -1,92 +1,67 @@
 # Core ML and Computer Vision
-torch>=1.13.0
-torchvision>=0.14.0
-numpy>=1.21.0
-opencv-python>=4.6.0
-pillow>=9.0.0
-scikit-learn>=1.1.0
+torch==2.2.2
+torchvision==0.17.2
+numpy==1.26.4
+opencv-python==4.12.0.88
+pillow==10.2.0
+scikit-learn==1.5.1
 
 # Face Recognition and Detection
-facenet-pytorch>=2.5.2
-transformers>=4.20.0
-mtcnn>=0.1.1
+facenet-pytorch==2.6.0
+transformers==4.57.1
+mtcnn==1.0.0
 
 # Vector Database and Search
-faiss-cpu>=1.7.3
+faiss-cpu==1.12.0
 
 # Web Framework and API
-fastapi>=0.95.0
-uvicorn[standard]>=0.20.0
-python-multipart>=0.0.6
-pydantic[email]>=1.10.0
-pydantic-settings>=2.0.0
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+python-multipart==0.0.6
+pydantic[email]==2.7.0
+pydantic-settings==2.2.0
 
-# Database
-sqlite3  # Built-in with Python
-sqlalchemy>=1.4.0
+# Database (SQLite3 is built-in, only need SQLAlchemy)
+sqlalchemy==2.0.25
 
 # Configuration and Environment
-pyyaml>=6.0
-python-dotenv>=1.0.0
-
-# Async and Concurrency
-asyncio  # Built-in with Python
-aiofiles>=22.0.0
+pyyaml==6.0.1
+python-dotenv==1.0.0
 
 # Logging and Monitoring
-structlog>=22.0.0
-prometheus-client>=0.16.0
+structlog==24.1.0
+prometheus-client==0.20.0
 
 # Data Processing and Utilities
-pandas>=1.5.0
-matplotlib>=3.6.0
-seaborn>=0.12.0
-tqdm>=4.64.0
+pandas==2.1.4
+matplotlib==3.8.3
+seaborn==0.13.1
+tqdm==4.66.5
 
 # Security and Cryptography
-cryptography>=40.0.0
-passlib[bcrypt]>=1.7.4
-python-jose[cryptography]>=3.3.0
+cryptography==42.0.7
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+bcrypt==4.1.3
 
 # Email and Communication (for OTP)
-aiosmtplib>=2.0.0
-jinja2>=3.1.0
+jinja2==3.1.4
 
 # HTTP Client for External APIs
-httpx>=0.24.0
-requests>=2.28.0
+httpx==0.27.0
+requests==2.32.3
 
 # Image Processing Enhancement
-imageio>=2.22.0
-scikit-image>=0.19.0
+imageio==2.34.0
+scikit-image==0.22.0
 
 # System Monitoring
-psutil>=5.9.0
-GPUtil>=1.4.0
+psutil==5.9.8
 
-# Testing Framework
-pytest>=7.2.0
-pytest-asyncio>=0.21.0
-pytest-cov>=4.0.0
-httpx>=0.24.0  # For testing FastAPI
-
-# Development Tools
-black>=23.0.0
-flake8>=6.0.0
-mypy>=1.0.0
-pre-commit>=3.0.0
-
-# Documentation
-sphinx>=6.0.0
-sphinx-rtd-theme>=1.2.0
-
-# Optional: CUDA support (uncomment if using GPU)
-# torch>=1.13.0+cu117 -f https://download.pytorch.org/whl/torch_stable.html
-# torchvision>=0.14.0+cu117 -f https://download.pytorch.org/whl/torch_stable.html
-
-# Optional: Alternative FAISS with GPU support
-# faiss-gpu>=1.7.3
+# Testing Framework (optional, can be excluded in production)
+pytest==7.4.4
+pytest-asyncio==0.23.3
+pytest-cov==4.1.0
 
 # Production Dependencies
-gunicorn>=20.1.0
-redis>=4.5.0  # For session management in production
+gunicorn==21.2.0
