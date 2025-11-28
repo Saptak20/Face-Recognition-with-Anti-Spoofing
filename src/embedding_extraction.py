@@ -73,20 +73,24 @@ class EmbeddingExtractor:
             Loaded PyTorch model
         """
         try:
-            # Use transformers-based model for face embeddings
-            model_id = "microsoft/resnet-50"  # Alternative face embedding model
-            model = AutoModel.from_pretrained(model_id)
-            self.processor = AutoFeatureExtractor.from_pretrained(model_id)
-            logger.info(f"Loaded transformer model: {model_id}")
+            # Use lightweight model for low-memory environments
+            from torchvision.models import mobilenet_v2
+            model = mobilenet_v2(pretrained=True)
+            model.classifier = nn.Identity()  # Remove classification head
+            self.processor = None
+            logger.info("Loaded lightweight MobileNetV2 model for embeddings")
             return model
                 
         except Exception as e:
             logger.error(f"Model loading error: {str(e)}")
-            # Fallback to basic ResNet
-            from torchvision.models import resnet50
-            model = resnet50(pretrained=True)
-            model.fc = nn.Identity()  # Remove classification head
-            logger.warning("Using torchvision ResNet50 fallback")
+            # Fallback to even simpler model
+            model = nn.Sequential(
+                nn.Conv2d(3, 64, 3, padding=1),
+                nn.ReLU(),
+                nn.AdaptiveAvgPool2d(1),
+                nn.Flatten()
+            )
+            logger.warning("Using minimal fallback model")
             return model
     
     def preprocess_image(self, image: Union[np.ndarray, Image.Image]) -> torch.Tensor:
