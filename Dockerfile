@@ -21,8 +21,8 @@ WORKDIR /app
 
 # Install Python dependencies first (better layer caching)
 COPY requirements.txt /app/requirements.txt
-RUN pip install --upgrade pip \
-    && pip install -r /app/requirements.txt
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy application source
 COPY . /app
