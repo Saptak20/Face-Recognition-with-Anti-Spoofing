@@ -12,8 +12,7 @@ import logging
 from typing import Optional, List, Union, Tuple
 from PIL import Image
 import cv2
-from facenet_pytorch import InceptionResnetV1
-from transformers import AutoModel, AutoProcessor
+from transformers import AutoModel, AutoProcessor, AutoFeatureExtractor
 import torchvision.transforms as transforms
 from pathlib import Path
 import pickle
@@ -74,19 +73,21 @@ class EmbeddingExtractor:
             Loaded PyTorch model
         """
         try:
-            if model_name in ['vggface2', 'casia-webface']:
-                model = InceptionResnetV1(pretrained=model_name, classify=False)
-                logger.info(f"Loaded InceptionResnetV1 with {model_name} weights")
-                return model
-            else:
-                # Custom model loading logic can be added here
-                logger.warning(f"Unknown model name: {model_name}, using default InceptionResnetV1")
-                return InceptionResnetV1(pretrained='vggface2', classify=False)
+            # Use transformers-based model for face embeddings
+            model_id = "microsoft/resnet-50"  # Alternative face embedding model
+            model = AutoModel.from_pretrained(model_id)
+            self.processor = AutoFeatureExtractor.from_pretrained(model_id)
+            logger.info(f"Loaded transformer model: {model_id}")
+            return model
                 
         except Exception as e:
             logger.error(f"Model loading error: {str(e)}")
-            # Fallback to basic model
-            return InceptionResnetV1(pretrained=None, classify=False)
+            # Fallback to basic ResNet
+            from torchvision.models import resnet50
+            model = resnet50(pretrained=True)
+            model.fc = nn.Identity()  # Remove classification head
+            logger.warning("Using torchvision ResNet50 fallback")
+            return model
     
     def preprocess_image(self, image: Union[np.ndarray, Image.Image]) -> torch.Tensor:
         """
