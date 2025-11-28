@@ -1,0 +1,12 @@
+database:
+  database_path: data/face_recognition.db
+  use_faiss: false
+authentication:
+  face_similarity_threshold: 0.7
+  enable_mfa: false
+api:
+  port: 8000
+  enable_authentication: false
+logging:
+  level: INFO
+  console_output: true

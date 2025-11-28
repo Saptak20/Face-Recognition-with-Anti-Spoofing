@@ -1,0 +1,63 @@
+2025-10-27 11:32:22,121 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2025-10-27 11:32:22,123 - __main__ - INFO - Directories created successfully
+2025-10-27 11:32:22,124 - __main__ - INFO - Initializing database manager...
+2025-10-27 11:32:22,165 - src.database_manager - INFO - SQLite database initialized successfully
+2025-10-27 11:32:22,165 - src.database_manager - INFO - Created new FAISS index: IndexFlatIP
+2025-10-27 11:32:22,166 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512
+2025-10-27 11:32:22,170 - __main__ - INFO - Database initialized - Users: 0, Embeddings: 0
+2025-10-27 11:32:22,170 - __main__ - INFO - Initializing ML models...
+2025-10-27 11:32:22,171 - __main__ - INFO - Loading face capture system...
+2025-10-27 11:32:22,195 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2025-10-27 11:32:22,195 - __main__ - INFO - Loading embedding extraction model...
+2025-10-27 11:34:53,997 - src.embedding_extraction - INFO - Loaded InceptionResnetV1 with vggface2 weights
+2025-10-27 11:34:54,002 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu
+2025-10-27 11:34:54,002 - __main__ - INFO - Loading liveness detection model...
+2025-10-27 11:34:54,005 - src.liveness_detection - WARNING - No pretrained weights loaded, using random initialization
+2025-10-27 11:34:54,005 - src.liveness_detection - INFO - LivenessDetector initialized with custom_cnn model
+2025-10-27 11:34:54,006 - __main__ - INFO - Loading deepfake detection model...
+2025-10-27 11:34:55,184 - huggingface_hub.file_download - WARNING - Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+2025-10-27 11:35:46,693 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2025-10-27 11:35:47,573 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2025-10-27 11:35:47,573 - __main__ - INFO - All ML models initialized successfully
+2025-10-27 11:35:47,573 - __main__ - INFO - Initializing authentication engine...
+2025-10-27 11:35:47,574 - src.authentication - INFO - AuthenticationEngine initialized
+2025-10-27 11:35:47,574 - __main__ - INFO - Authentication engine initialized successfully
+2025-10-27 11:35:47,574 - __main__ - INFO - Initializing API server...
+2025-10-27 11:35:47,588 - src.api - INFO - FastAPI application initialized
+2025-10-27 11:35:47,588 - src.api - INFO - System components set successfully
+2025-10-27 11:35:47,588 - __main__ - INFO - API server initialized successfully
+2025-10-27 11:35:47,589 - __main__ - INFO - System initialization completed in 205.47 seconds
+2025-10-27 11:35:47,591 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 0, 'active_users': 0, 'total_embeddings': 0, 'avg_embedding_quality': 0.0, 'total_authentications': 0, 'successful_authentications': 0, 'success_rate_percent': 0.0, 'faiss_index_size': 0}, 'performance': {'rss_mb': 475.20703125, 'vms_mb': 3243.046875, 'percent': 2.953788015273366}}
+2025-10-27 11:35:47,592 - __main__ - INFO - Starting Face Recognition System...
+2025-10-27 11:35:47,592 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8000
+2025-10-28 11:03:51,741 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2025-10-28 11:03:51,744 - __main__ - INFO - Directories created successfully
+2025-10-28 11:03:51,745 - __main__ - INFO - Initializing database manager...
+2025-10-28 11:03:51,759 - src.database_manager - INFO - SQLite database initialized successfully
+2025-10-28 11:03:51,761 - src.database_manager - INFO - Created new FAISS index: IndexFlatIP
+2025-10-28 11:03:51,762 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512
+2025-10-28 11:03:51,766 - __main__ - INFO - Database initialized - Users: 0, Embeddings: 0
+2025-10-28 11:03:51,766 - __main__ - INFO - Initializing ML models...
+2025-10-28 11:03:51,766 - __main__ - INFO - Loading face capture system...
+2025-10-28 11:03:51,838 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2025-10-28 11:03:51,838 - __main__ - INFO - Loading embedding extraction model...
+2025-10-28 11:03:52,268 - src.embedding_extraction - INFO - Loaded InceptionResnetV1 with vggface2 weights
+2025-10-28 11:03:52,275 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu
+2025-10-28 11:03:52,276 - __main__ - INFO - Loading liveness detection model...
+2025-10-28 11:03:52,280 - src.liveness_detection - WARNING - No pretrained weights loaded, using random initialization
+2025-10-28 11:03:52,280 - src.liveness_detection - INFO - LivenessDetector initialized with custom_cnn model
+2025-10-28 11:03:52,281 - __main__ - INFO - Loading deepfake detection model...
+2025-10-28 11:03:53,421 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2025-10-28 11:03:53,939 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2025-10-28 11:03:53,940 - __main__ - INFO - All ML models initialized successfully
+2025-10-28 11:03:53,941 - __main__ - INFO - Initializing authentication engine...
+2025-10-28 11:03:53,942 - src.authentication - INFO - AuthenticationEngine initialized
+2025-10-28 11:03:53,942 - __main__ - INFO - Authentication engine initialized successfully
+2025-10-28 11:03:53,942 - __main__ - INFO - Initializing API server...
+2025-10-28 11:03:53,961 - src.api - INFO - FastAPI application initialized
+2025-10-28 11:03:53,961 - src.api - INFO - System components set successfully
+2025-10-28 11:03:53,962 - __main__ - INFO - API server initialized successfully
+2025-10-28 11:03:53,962 - __main__ - INFO - System initialization completed in 2.23 seconds
+2025-10-28 11:03:53,966 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 0, 'active_users': 0, 'total_embeddings': 0, 'avg_embedding_quality': 0.0, 'total_authentications': 0, 'successful_authentications': 0, 'success_rate_percent': 0.0, 'faiss_index_size': 0}, 'performance': {'rss_mb': 470.77734375, 'vms_mb': 3240.99609375, 'percent': 2.9262539995950023}}
+2025-10-28 11:03:53,966 - __main__ - INFO - Starting Face Recognition System...
+2025-10-28 11:03:53,967 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8000
