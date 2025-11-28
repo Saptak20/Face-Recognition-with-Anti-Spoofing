@@ -7,7 +7,6 @@ pillow==10.0.1
 
 # Face Recognition and Detection
 transformers==4.35.2
-mtcnn==0.1.1
 
 # Vector Database and Search
 faiss-cpu==1.7.4
