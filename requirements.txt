@@ -31,8 +31,6 @@ bcrypt==4.1.1
 # HTTP Client for External APIs
 requests==2.31.0
 
-# Data Processing and Utilities
-tqdm==4.66.1
 
 # Production Dependencies
 gunicorn==21.2.0
