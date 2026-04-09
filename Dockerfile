@@ -6,16 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1
 
 # System dependencies for OpenCV, image processing, etc.
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libglib2.0-0 \
-    libgl1 \
-    libsm6 \
-    libxext6 \
-    libxrender1 \
-    ffmpeg \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /app
 
