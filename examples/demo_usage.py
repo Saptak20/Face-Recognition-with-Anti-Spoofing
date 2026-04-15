@@ -223,11 +223,7 @@ class FaceRecognitionDemo:
                 return False
             
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            
-            # Extract face
-            faces = self.system.face_capture.detect_faces(image)
-            if not faces:
-                return False
+
             
             # Extract embedding
             face_image = self.system.face_capture.extract_face(image, faces[0])
