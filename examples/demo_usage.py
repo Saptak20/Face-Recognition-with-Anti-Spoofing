@@ -101,11 +101,7 @@ class FaceRecognitionDemo:
                 'overall_confidence_threshold': 0.6,
                 'enable_mfa': False,
                 'max_attempts_per_hour': 10
-            },
-            'api': {
-                'host': '0.0.0.0',
-                'port': 8000,
-                'enable_cors': True
+            }
             }
         }
     
