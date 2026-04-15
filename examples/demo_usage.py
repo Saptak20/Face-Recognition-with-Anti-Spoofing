@@ -181,8 +181,7 @@ class FaceRecognitionDemo:
             except Exception as e:
                 self.logger.error(f"Error registering {user_data['name']}: {e}")
         
-        self.logger.info(f"Registration complete. {len(registered_users)} users registered.")
-        return registered_users
+
     
     async def _register_user_from_image(self, user_id: str, name: str, 
                                        email: str, image_path: str) -> Dict:
