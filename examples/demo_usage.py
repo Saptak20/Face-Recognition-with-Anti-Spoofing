@@ -127,11 +127,6 @@ class FaceRecognitionDemo:
         """Prepare sample dataset for demo."""
         self.logger.info("Preparing sample dataset...")
         
-        # Create sample dataset
-        dataset_info = self.dataset_loader.create_sample_dataset(
-            num_people=5, 
-            images_per_person=3
-        )
         
         # Load the created dataset
         sample_dir = self.dataset_loader.dataset_dir / "sample_generated"
