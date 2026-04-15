@@ -177,11 +177,7 @@ class FaceRecognitionDemo:
                 if result['success']:
                     self.logger.info(f"✅ Successfully registered {user_data['name']}")
                     registered_users.append(user_data)
-                    
-                    # Add additional embeddings if available
-                    for additional_image in user_data['additional_images'][:2]:
-                        if os.path.exists(additional_image):
-                            await self._add_user_embedding(user_data['user_id'], additional_image)
+      
                 
                 else:
                     self.logger.error(f"❌ Failed to register {user_data['name']}: {result.get('message', 'Unknown error')}")
