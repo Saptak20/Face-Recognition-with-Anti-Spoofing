@@ -681,15 +681,4 @@ class TestAPIIntegration:
         response = client.delete("/users/test_user_001")
         assert response.status_code == 200
     
-    def create_test_image(self):
-        """Create a test image for upload."""
-        img = Image.new('RGB', (160, 160), color='green')
-        img_buffer = io.BytesIO()
-        img.save(img_buffer, format='JPEG')
-        img_buffer.seek(0)
-        return img_buffer
-
-
-if __name__ == "__main__":
-    # Simple test runner
-    pytest.main([__file__, "-v"])
+    
