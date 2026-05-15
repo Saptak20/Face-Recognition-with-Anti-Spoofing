@@ -1,5 +1,9 @@
+"""
+Test Authentication Engine
 
-
+Unit tests for the authentication engine including registration,
+authentication pipeline, and multi-factor authentication.
+"""
 import pytest
 import numpy as np
 from unittest.mock import Mock, patch, MagicMock
