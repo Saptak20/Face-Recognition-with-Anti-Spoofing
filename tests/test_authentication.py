@@ -14,12 +14,6 @@ from datetime import datetime, timedelta
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-try:
-    from src.authentication import AuthenticationEngine, OTPManager
-except ImportError:
-    AuthenticationEngine = Mock
-    OTPManager = Mock
-
 
 class TestOTPManager:
     """Test class for OTP Manager functionality."""
