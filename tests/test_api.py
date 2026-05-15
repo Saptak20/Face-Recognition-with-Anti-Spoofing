@@ -689,6 +689,6 @@ class TestAPIIntegration:
         return img_buffer
 
 
-if __name__ == "__main__":
+        if __name__ == "__main__":
     # Simple test runner
-    pytest.main([__file__, "-v"])
+          pytest.main([__file__, "-v"])
