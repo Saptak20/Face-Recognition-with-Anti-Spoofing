@@ -1,9 +1,4 @@
-"""
-Demo Usage Examples
 
-This script demonstrates how to use the face recognition system
-with sample data and common use cases.
-"""
 
 import sys
 import os
