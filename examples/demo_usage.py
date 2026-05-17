@@ -29,14 +29,7 @@ class FaceRecognitionDemo:
     """
     Demonstration class for the face recognition system.
     
-    Shows how to:
-    - Initialize the system
-    - Register users
-    - Perform authentication
-    - Use sample datasets
-    - Handle different scenarios
-    """
-    
+
     def __init__(self, config_path: str = "config/config.yaml"):
         """
         Initialize the demo.
