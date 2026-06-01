@@ -320,14 +320,7 @@ class FaceRecognitionDemo:
             
             if liveness_score > self.system.auth_engine.liveness_threshold:
                 self.logger.info("✅ Liveness check passed")
-            else:
-                self.logger.info("❌ Liveness check failed (expected for static image)")
-        
-        except Exception as e:
-            self.logger.error(f"Liveness detection error: {e}")
-        
-        # Test deepfake detection
-        self.logger.info("Testing deepfake detection...")
+ 
         
         try:
             deepfake_result = self.system.deepfake_detector.comprehensive_deepfake_analysis(test_image)
