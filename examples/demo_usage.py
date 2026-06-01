@@ -39,13 +39,7 @@ class FaceRecognitionDemo:
         """
         self.logger = logging.getLogger(__name__)
         
-        # Load configuration
-        try:
-            config_manager = ConfigManager()
-            self.config = config_manager.load_config(config_path)
-        except Exception as e:
-            self.logger.warning(f"Could not load config from {config_path}: {e}")
-            self.config = self._get_default_config()
+
         
         # Initialize system
         self.system = None
