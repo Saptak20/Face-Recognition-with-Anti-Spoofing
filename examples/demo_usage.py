@@ -82,9 +82,6 @@ class FaceRecognitionDemo:
             self.logger.info("System initialized successfully!")
             return True
             
-        except Exception as e:
-            self.logger.error(f"Failed to initialize system: {e}")
-            return False
     
     def prepare_sample_data(self):
         """Prepare sample dataset for demo."""
