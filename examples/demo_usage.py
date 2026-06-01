@@ -41,12 +41,7 @@ class FaceRecognitionDemo:
         
 
         
-        # Initialize system
-        self.system = None
-        self.dataset_loader = SampleDatasetLoader()
-        
-        # Demo data
-        self.demo_users = []
+ 
     
     def _get_default_config(self) -> Dict:
         """Get default configuration for demo."""
