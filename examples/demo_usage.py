@@ -38,20 +38,6 @@ class FaceRecognitionDemo:
             config_path: Path to configuration file
         """
         self.logger = logging.getLogger(__name__)
-        
-
-        
- 
-    
-    def _get_default_config(self) -> Dict:
-        """Get default configuration for demo."""
-        return {
-            'database': {
-                'database_path': 'data/demo_face_recognition.db',
-                'index_path': 'data/demo_face_index.faiss',
-                'embedding_dimension': 512,
-                'similarity_threshold': 0.7,
-                'use_faiss': False  # Use fallback for demo
             },
             'face_capture': {
                 'min_face_size': 40,
