@@ -1,11 +1,6 @@
 FROM python:3.12-slim
 
-# Avoid interactive prompts during package install
-ENV DEBIAN_FRONTEND=noninteractive \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
 
-# System dependencies for OpenCV, image processing, etc.
 
 
 WORKDIR /app
