@@ -13,8 +13,7 @@ RUN pip install --upgrade pip setuptools wheel \
 # Copy application source
 COPY . /app
 
-# Create required directories
-RUN mkdir -p /app/data /app/logs /app/models
+
 
 # Expose default port (Render injects PORT env var)
 EXPOSE 8000
