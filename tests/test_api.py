@@ -1,9 +1,4 @@
-"""
-Test FastAPI Endpoints
 
-Unit tests for the FastAPI-based REST API endpoints including
-registration, authentication, MFA, and management operations.
-"""
 
 import pytest
 import numpy as np
