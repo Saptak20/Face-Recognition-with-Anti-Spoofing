@@ -43,13 +43,6 @@ class TestFaceRecognitionAPI:
             'allowed_file_types': ['image/jpeg', 'image/png', 'image/jpg']
         }
     
-    @pytest.fixture
-    def client(self, api_instance):
-        """Create test client."""
-        if TestClient == Mock:
-            return Mock()
-        return TestClient(app)
-    
     def test_api_initialization(self, api_instance, api_config):
         """Test API initialization."""
         assert api_instance.config == api_config
