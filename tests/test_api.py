@@ -61,11 +61,6 @@ class TestFaceRecognitionAPI:
         assert data["status"] == "healthy"
         assert "timestamp" in data
         assert "version" in data
-    
-    def test_system_info(self, client):
-        """Test system info endpoint."""
-        if client == Mock():
-            return
         
         response = client.get("/info")
         assert response.status_code == 200
