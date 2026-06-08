@@ -11,17 +11,6 @@ import io
 import base64
 from PIL import Image
 
-# Add src to path
-sys.path.append(str(Path(__file__).parent.parent / "src"))
-
-try:
-    from fastapi.testclient import TestClient
-    from src.api import FaceRecognitionAPI, app
-except ImportError:
-    TestClient = Mock
-    FaceRecognitionAPI = Mock
-    app = Mock
-
 
 class TestFaceRecognitionAPI:
     """Test class for Face Recognition API endpoints."""
