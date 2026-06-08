@@ -44,14 +44,6 @@ class TestFaceRecognitionAPI:
         }
     
     @pytest.fixture
-    def api_instance(self, mock_components, api_config):
-        """Create API instance for testing."""
-        return FaceRecognitionAPI(
-            **mock_components,
-            config=api_config
-        )
-    
-    @pytest.fixture
     def client(self, api_instance):
         """Create test client."""
         if TestClient == Mock:
