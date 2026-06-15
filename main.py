@@ -1,9 +1,4 @@
-"""
-Main Entry Point
 
-Main application entry point for the Face Recognition System.
-Initializes all components and starts the FastAPI server.
-"""
 
 import sys
 import logging
