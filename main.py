@@ -26,10 +26,6 @@ except ImportError as e:
     print("Please ensure all dependencies are installed: pip install -r requirements.txt")
     sys.exit(1)
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 
 class FaceRecognitionSystem:
     """
