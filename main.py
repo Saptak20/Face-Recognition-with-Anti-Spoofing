@@ -47,15 +47,6 @@ class FaceRecognitionSystem:
         self.config_manager = None
         self.config = None
         
-        # System components
-        self.face_capture = None
-        self.embedding_extractor = None
-        self.liveness_detector = None
-        self.deepfake_detector = None
-        self.database_manager = None
-        self.auth_engine = None
-        self.api = None
-        
         # Performance monitoring
         self.perf_utils = PerformanceUtils()
         
