@@ -246,14 +246,6 @@ class FaceRecognitionSystem:
                 embedding_size=self.config.models.embedding_dim
             )
             
-            # Skip liveness and deepfake for low-memory environments (lazy-load when needed)
-            logger.info("Skipping optional models (liveness/deepfake) to save memory")
-            self.liveness_detector = None
-            self.deepfake_detector = None
-            
-            logger.info("Core ML models initialized successfully")
-            return True
-            
         except Exception as e:
             logger.error(f"Model initialization error: {str(e)}")
             return False
