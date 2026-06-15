@@ -502,15 +502,4 @@ def main():
         status = system.get_system_status()
         logger.info(f"System status: {status}")
         
-        # Run system
-        system.run()
-        
-    except KeyboardInterrupt:
-        logger.info("Interrupted by user")
-    except Exception as e:
-        logger.error(f"Main execution error: {str(e)}")
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()
+       
