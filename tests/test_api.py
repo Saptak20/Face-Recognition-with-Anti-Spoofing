@@ -1,17 +1,5 @@
 
 
-import pytest
-import numpy as np
-from unittest.mock import Mock, patch, AsyncMock
-import sys
-from pathlib import Path
-from datetime import datetime
-import json
-import io
-import base64
-from PIL import Image
-
-
 class TestFaceRecognitionAPI:
     """Test class for Face Recognition API endpoints."""
     
