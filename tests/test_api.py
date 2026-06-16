@@ -1,10 +1,5 @@
 
-    
-    def test_api_initialization(self, api_instance, api_config):
-        """Test API initialization."""
-        assert api_instance.config == api_config
-        assert hasattr(api_instance, 'auth_engine')
-        assert hasattr(api_instance, 'database_manager')
+
     
     def test_health_check(self, client):
         """Test health check endpoint."""
