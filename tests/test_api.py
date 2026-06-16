@@ -1,19 +1,4 @@
 
-
-class TestFaceRecognitionAPI:
-    """Test class for Face Recognition API endpoints."""
-    
-    @pytest.fixture
-    def mock_components(self):
-        """Create mock components for testing."""
-        return {
-            'face_capture': Mock(),
-            'embedding_extractor': Mock(),
-            'liveness_detector': Mock(),
-            'deepfake_detector': Mock(),
-            'database_manager': Mock(),
-            'auth_engine': Mock()
-        }
     
     @pytest.fixture
     def api_config(self):
