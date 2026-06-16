@@ -1,21 +1,5 @@
 
     
-    @pytest.fixture
-    def api_config(self):
-        """Create API configuration for testing."""
-        return {
-            'host': '0.0.0.0',
-            'port': 8000,
-            'enable_cors': True,
-            'cors_origins': ['*'],
-            'enable_rate_limiting': True,
-            'rate_limit_calls': 100,
-            'rate_limit_period': 3600,
-            'enable_authentication': False,  # Disable for testing
-            'max_file_size': 10 * 1024 * 1024,  # 10MB
-            'allowed_file_types': ['image/jpeg', 'image/png', 'image/jpg']
-        }
-    
     def test_api_initialization(self, api_instance, api_config):
         """Test API initialization."""
         assert api_instance.config == api_config
