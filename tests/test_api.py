@@ -1,10 +1,6 @@
 
 
     
-    def test_health_check(self, client):
-        """Test health check endpoint."""
-        if client == Mock():
-            return  # Skip if TestClient not available
         
         response = client.get("/health")
         assert response.status_code == 200
