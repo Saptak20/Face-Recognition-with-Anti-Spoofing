@@ -9,12 +9,6 @@ import numpy as np
 from pathlib import Path
 from typing import List, Dict
 import json
-
-
-
-class FaceRecognitionDemo:
-    """
-    Demonstration class for the face recognition system.
     
 
     def __init__(self, config_path: str = "config/config.yaml"):
