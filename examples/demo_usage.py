@@ -10,9 +10,6 @@ from pathlib import Path
 from typing import List, Dict
 import json
 
-# Add src to path
-sys.path.append(str(Path(__file__).parent.parent / "src"))
-sys.path.append(str(Path(__file__).parent))
 
 # Import the face recognition system components
 try:
