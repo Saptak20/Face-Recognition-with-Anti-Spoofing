@@ -3,12 +3,6 @@
 import sys
 import os
 import asyncio
-import logging
-import cv2
-import numpy as np
-from pathlib import Path
-from typing import List, Dict
-import json
     
 
     def __init__(self, config_path: str = "config/config.yaml"):
