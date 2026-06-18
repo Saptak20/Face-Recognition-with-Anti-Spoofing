@@ -56,11 +56,7 @@ import asyncio
             
             self.logger.info("System initialized successfully!")
             return True
-            
-    
-    def prepare_sample_data(self):
-        """Prepare sample dataset for demo."""
-        self.logger.info("Preparing sample dataset...")
+
         
         
         # Load the created dataset
