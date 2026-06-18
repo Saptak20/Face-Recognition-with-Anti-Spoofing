@@ -11,16 +11,6 @@ from typing import List, Dict
 import json
 
 
-# Import the face recognition system components
-try:
-    from src.main import FaceRecognitionSystem
-    from src.config import ConfigManager
-    from utils.sample_dataset_loader import SampleDatasetLoader
-except ImportError as e:
-    print(f"Import error: {e}")
-    print("Please ensure all dependencies are installed and paths are correct")
-    sys.exit(1)
-
 
 class FaceRecognitionDemo:
     """
