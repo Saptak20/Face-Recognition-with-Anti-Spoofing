@@ -1,12 +1,4 @@
 
-    
-            },
-            'liveness_detection': {
-                'model_type': 'mobilenet',
-                'threshold': 0.5,
-                'enable_eye_blink': True,
-                'enable_head_movement': True
-            },
             'deepfake_detection': {
                 'model_name': 'facebook/deit-tiny-patch16-224',
                 'threshold': 0.5,
