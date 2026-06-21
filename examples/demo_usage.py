@@ -1,10 +1,5 @@
 
-            'face_capture': {
-                'min_face_size': 40,
-                'scale_factor': 1.1,
-                'min_neighbors': 5,
-                'webcam_index': 0,
-                'capture_timeout': 10
+    
             },
             'liveness_detection': {
                 'model_type': 'mobilenet',
