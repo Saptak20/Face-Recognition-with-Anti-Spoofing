@@ -1,12 +1,4 @@
- def __init__(self, config_path: str = "config/config.yaml"):
-        """
-        Initialize the demo.
-        
-        Args:
-            config_path: Path to configuration file
-        """
-        self.logger = logging.getLogger(__name__)
-            },
+
             'face_capture': {
                 'min_face_size': 40,
                 'scale_factor': 1.1,
