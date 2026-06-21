@@ -1,8 +1,4 @@
-
-
-    
-
-    def __init__(self, config_path: str = "config/config.yaml"):
+ def __init__(self, config_path: str = "config/config.yaml"):
         """
         Initialize the demo.
         
