@@ -32,12 +32,6 @@ A production-grade, real-time face recognition system with advanced anti-spoofin
 - **Webcam**: For real-time face capture
 - **Internet**: For downloading pretrained models (initial setup)
 
-## 🛠️ Installation
-
-### 1. Clone Repository
-```bash
-git clone https://github.com/your-username/face-recognition-system.git
-cd face-recognition-system
 ```
 
 ### 2. Create Virtual Environment
