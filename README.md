@@ -36,15 +36,6 @@ A production-grade, real-time face recognition system with advanced anti-spoofin
 
 ### 2. Create Virtual Environment
 ```bash
-# Using venv
-python -m venv face_recognition_env
-
-# Activate environment
-# Windows
-face_recognition_env\Scripts\activate
-# Linux/Mac
-source face_recognition_env/bin/activate
-```
 
 ### 3. Install Dependencies
 ```bash
