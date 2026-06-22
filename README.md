@@ -37,11 +37,6 @@ A production-grade, real-time face recognition system with advanced anti-spoofin
 ### 2. Create Virtual Environment
 ```bash
 
-### 3. Install Dependencies
-```bash
-# Install all required packages
-pip install -r requirements.txt
-
 # For GPU support (optional)
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 pip install faiss-gpu
