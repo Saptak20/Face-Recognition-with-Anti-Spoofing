@@ -4,13 +4,6 @@ A production-grade, real-time face recognition system with advanced anti-spoofin
 
 ## 🚀 Features
 
-### Core Capabilities
-- **Real-time Face Recognition**: High-accuracy face detection and matching using FaceNet embeddings
-- **Anti-Spoofing Protection**: CNN-based liveness detection to prevent photo/video attacks
-- **Deepfake Detection**: Vision Transformer (ViT) based synthetic face detection
-- **Large-scale Matching**: Efficient similarity search using FAISS vector database
-- **Multi-Factor Authentication**: Optional OTP verification via email/SMS
-- **RESTful API**: FastAPI-based endpoints for easy integration
 
 ### Security Features
 - **Comprehensive Pipeline**: Face capture → Liveness → Deepfake → Identity matching
