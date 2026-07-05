@@ -9,12 +9,6 @@
             # Create system instance
             self.system = FaceRecognitionSystem(self.config)
         
-        
-        
-        # Load the created dataset
-        sample_dir = self.dataset_loader.dataset_dir / "sample_generated"
-        person_samples = self.dataset_loader.load_from_directory(sample_dir)
-        
         # Create demo registration data
         self.demo_users = self.dataset_loader.create_demo_registration_data(person_samples)
         
