@@ -8,12 +8,6 @@
             
             # Create system instance
             self.system = FaceRecognitionSystem(self.config)
-        
-        # Create demo registration data
-        self.demo_users = self.dataset_loader.create_demo_registration_data(person_samples)
-        
-        self.logger.info(f"Prepared {len(self.demo_users)} demo users")
-        return self.demo_users
     
     async def demo_user_registration(self):
         """Demonstrate user registration process."""
