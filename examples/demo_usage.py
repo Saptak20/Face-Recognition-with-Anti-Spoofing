@@ -124,10 +124,6 @@
         """Demonstrate authentication process."""
         self.logger.info("=== DEMO: User Authentication ===")
         
-        if not self.demo_users:
-            self.logger.error("No demo users available. Run registration demo first.")
-            return
-        
         # Test authentication with known users
         for user_data in self.demo_users[:3]:
             try:
