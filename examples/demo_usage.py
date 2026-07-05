@@ -8,9 +8,7 @@
             
             # Create system instance
             self.system = FaceRecognitionSystem(self.config)
-            
-            # Initialize system components
-            await self.system.initialize()
+        
         
         
         # Load the created dataset
