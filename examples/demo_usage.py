@@ -11,10 +11,6 @@
             
             # Initialize system components
             await self.system.initialize()
-            
-            self.logger.info("System initialized successfully!")
-            return True
-
         
         
         # Load the created dataset
