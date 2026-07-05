@@ -88,7 +88,6 @@
                 image_data=image   # Provide image directly
             )
             
-            return result
     
     async def _add_user_embedding(self, user_id: str, image_path: str):
         """Add additional embedding for user."""
