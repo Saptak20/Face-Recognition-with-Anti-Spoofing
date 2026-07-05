@@ -1,19 +1,5 @@
 
-            'deepfake_detection': {
-                'model_name': 'facebook/deit-tiny-patch16-224',
-                'threshold': 0.5,
-                'enable_spatial_analysis': True
-            },
-            'authentication': {
-                'face_similarity_threshold': 0.7,
-                'liveness_threshold': 0.5,
-                'deepfake_threshold': 0.5,
-                'overall_confidence_threshold': 0.6,
-                'enable_mfa': False,
-                'max_attempts_per_hour': 10
-            }
-            }
-        }
+
     
     async def initialize_system(self):
         """Initialize the face recognition system."""
