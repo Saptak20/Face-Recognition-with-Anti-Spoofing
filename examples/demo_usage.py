@@ -33,8 +33,7 @@
         
         if not self.demo_users:
             self.prepare_sample_data()
-        
-        registered_users = []
+    
         
         for user_data in self.demo_users[:3]:  # Register first 3 users
             try:
