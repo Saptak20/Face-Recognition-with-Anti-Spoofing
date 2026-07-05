@@ -89,9 +89,6 @@
             )
             
             return result
-            
-        except Exception as e:
-            return {'success': False, 'message': str(e)}
     
     async def _add_user_embedding(self, user_id: str, image_path: str):
         """Add additional embedding for user."""
