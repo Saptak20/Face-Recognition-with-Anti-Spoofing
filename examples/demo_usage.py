@@ -7,15 +7,7 @@
             self.logger.info("Initializing face recognition system...")
             
             # Create system instance
-            self.system = FaceRecognitionSystem(self.config)
-    
-    async def demo_user_registration(self):
-        """Demonstrate user registration process."""
-        self.logger.info("=== DEMO: User Registration ===")
-        
-        if not self.demo_users:
-            self.prepare_sample_data()
-    
+            s
         
 
                     continue
