@@ -17,14 +17,7 @@
             self.prepare_sample_data()
     
         
-        for user_data in self.demo_users[:3]:  # Register first 3 users
-            try:
-                self.logger.info(f"Registering user: {user_data['name']}")
-                
-                # Load image from file
-                image_path = user_data['image_path']
-                if not os.path.exists(image_path):
-                    self.logger.error(f"Image not found: {image_path}")
+
                     continue
                 
                 # Register user using image file
