@@ -1,14 +1,5 @@
 
 
-    
-    async def initialize_system(self):
-        """Initialize the face recognition system."""
-        try:
-            self.logger.info("Initializing face recognition system...")
-            
-            # Create system instance
-            s
-        
 
                     continue
                 
