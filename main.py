@@ -476,9 +476,6 @@ def main():
             system.config.api.port = args.port
         if args.debug:
             system.config.api.debug = True
-        
-        # Print system status
-        status = system.get_system_status()
-        logger.info(f"System status: {status}")
+
         
        
