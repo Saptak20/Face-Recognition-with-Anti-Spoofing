@@ -14,7 +14,3 @@ services:
       - key: API_PORT
         value: "8000"
     healthCheckPath: /api/v1/health
-    disk:
-      name: data
-      mountPath: /app/data
-      sizeGB: 1
