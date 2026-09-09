@@ -74,9 +74,18 @@ class EmbeddingExtractor:
         """
         try:
             # Use lightweight model for low-memory environments
-            from torchvision.models import mobilenet_v2
-            model = mobilenet_v2(pretrained=True)
-            model.classifier = nn.Identity()  # Remove classification head
+            try:
+                from torchvision.models import mobilenet_v2, MobileNet_V2_Weights
+                weights = MobileNet_V2_Weights.DEFAULT if pretrained else None
+                model = mobilenet_v2(weights=weights)
+            except (ImportError, AttributeError):
+                from torchvision.models import mobilenet_v2
+                model = mobilenet_v2(pretrained=pretrained)
+
+            model.classifier = nn.Sequential(
+                nn.Dropout(p=0.2),
+                nn.Linear(1280, self.embedding_size)
+            )
             self.processor = None
             logger.info("Loaded lightweight MobileNetV2 model for embeddings")
             return model
@@ -88,7 +97,8 @@ class EmbeddingExtractor:
                 nn.Conv2d(3, 64, 3, padding=1),
                 nn.ReLU(),
                 nn.AdaptiveAvgPool2d(1),
-                nn.Flatten()
+                nn.Flatten(),
+                nn.Linear(64, self.embedding_size)
             )
             logger.warning("Using minimal fallback model")
             return model

@@ -1,113 +1,78 @@
-system:
-  name: Face Recognition System
-  version: 1.0.0
-  description: Production-grade face recognition with anti-spoofing
-  debug: false
-  log_level: INFO
+# Face Recognition System Configuration
+# Based on the system configuration schema documented in README.md and src/config.py
+
+# Model Configuration
+models:
+  face_detection_confidence: 0.9
+  face_image_size: 160
+  face_margin: 32
+  min_face_size: 20
+  embedding_model: "vggface2"
+  embedding_dim: 512
+  liveness_model_type: "custom_cnn"
+  liveness_input_size: 64
+  liveness_threshold: 0.5
+  deepfake_model: "google/vit-base-patch16-224"
+  deepfake_image_size: 224
+  deepfake_threshold: 0.5
+  device: "cpu"  # "cpu" or "cuda"
+
+# Database Configuration
 database:
-  database_path: data/face_recognition.db
-  index_path: data/face_index.faiss
-  embedding_dimension: 512
-  similarity_threshold: 0.7
-  use_faiss: true
-  auto_backup: true
+  sqlite_db_path: "data/face_recognition.db"
+  faiss_index_path: "data/embeddings/face_index.faiss"
+  faiss_index_type: "IndexFlatIP"
+  backup_enabled: true
   backup_interval_hours: 24
-face_capture:
-  min_face_size: 40
-  scale_factor: 1.1
-  min_neighbors: 5
-  confidence_threshold: 0.9
-  webcam_index: 0
-  capture_timeout: 10
-  image_size:
-  - 160
-  - 160
-  normalize: true
-embedding_extraction:
-  model_name: vggface2
-  batch_size: 32
-  device: auto
-  normalize_embeddings: true
-  embedding_dimension: 512
-liveness_detection:
-  model_type: mobilenet
-  threshold: 0.5
-  enable_eye_blink: true
-  enable_head_movement: true
-  enable_texture_analysis: true
-  temporal_frames: 5
-deepfake_detection:
-  model_name: facebook/deit-tiny-patch16-224
-  threshold: 0.5
-  enable_spatial_analysis: true
-  enable_temporal_analysis: false
-  confidence_threshold: 0.8
+  backup_path: "data/backups"
+  max_backups: 7
+
+# Authentication Configuration
 authentication:
   face_similarity_threshold: 0.7
-  liveness_threshold: 0.5
-  deepfake_threshold: 0.5
   overall_confidence_threshold: 0.6
+  face_similarity_weight: 0.5
+  liveness_weight: 0.3
+  deepfake_weight: 0.2
+  max_attempts_per_hour: 5
   enable_mfa: false
-  max_attempts_per_hour: 10
-  confidence_weights:
-    face_similarity: 0.5
-    liveness: 0.3
-    deepfake: 0.2
-mfa:
   otp_length: 6
   otp_expiry_minutes: 5
-  max_attempts: 3
-  email_enabled: true
-  sms_enabled: false
-api:
-  host: 0.0.0.0
-  port: 8000
-  workers: 1
-  enable_cors: true
-  cors_origins:
-  - '*'
-  enable_rate_limiting: true
-  rate_limit_calls: 100
-  rate_limit_period: 3600
-  enable_authentication: true
-  jwt_secret_key: your-secret-key-here
-  jwt_expiry_hours: 24
-  max_file_size: 10485760
-  allowed_file_types:
-  - image/jpeg
-  - image/png
-  - image/jpg
-email:
-  smtp_server: smtp.gmail.com
+  smtp_server: "smtp.gmail.com"
   smtp_port: 587
-  username: ''
-  password: ''
-  sender_name: Face Recognition System
-  sender_email: ''
+  sender_email: ""
+  sender_password: ""
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  workers: 1
+  allowed_origins:
+    - "*"
+  allow_credentials: true
+  api_key_required: false
+  api_key: ""
+  jwt_secret_key: "your-secret-key-change-this"
+  max_request_size: 10485760  # 10MB
+  request_timeout: 30
+
+# Logging Configuration
 logging:
-  level: INFO
-  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-  file_path: logs/face_recognition.log
-  max_size_mb: 10
-  backup_count: 5
-  console_output: true
-security:
-  admin_api_key: your-admin-key-here
-  enable_ip_whitelist: false
-  allowed_ips:
-  - 127.0.0.1
-  - 192.168.1.0/24
-  enable_request_signing: false
-  max_concurrent_requests: 100
-performance:
-  use_gpu: false
-  gpu_device_id: 0
-  enable_caching: true
-  cache_size: 1000
-  enable_compression: true
-  max_workers: 4
-monitoring:
-  enable_metrics: true
-  metrics_interval: 60
-  enable_health_checks: true
-  health_check_interval: 30
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_enabled: true
+  file_path: "logs/face_recognition.log"
+  file_max_size_mb: 10
+  file_backup_count: 5
+  console_enabled: true
+  rotation_enabled: true
+
+# System Paths and Environment
+project_root: "."
+data_dir: "data"
+models_dir: "models"
+logs_dir: "logs"
+config_dir: "config"
+environment: "development"

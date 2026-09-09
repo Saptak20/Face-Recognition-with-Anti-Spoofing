@@ -1,9 +1,16 @@
+--extra-index-url https://download.pytorch.org/whl/cu124
+
+# Core ML and Computer Vision
+torch==2.5.1+cu124
+torchvision==0.20.1+cu124
+opencv-python==4.10.0.84
+pillow==12.3.0
 
 # Face Recognition and Detection
 transformers==4.35.2
 
 # Vector Database and Search
-faiss-cpu==1.8.0
+faiss-cpu==1.10.0
 
 # Web Framework and API
 fastapi==0.104.1

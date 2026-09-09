@@ -26,6 +26,10 @@ except ImportError as e:
     print("Please ensure all dependencies are installed: pip install -r requirements.txt")
     sys.exit(1)
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 class FaceRecognitionSystem:
     """
@@ -42,6 +46,15 @@ class FaceRecognitionSystem:
         self.config_path = config_path
         self.config_manager = None
         self.config = None
+        
+        # System components
+        self.face_capture = None
+        self.embedding_extractor = None
+        self.liveness_detector = None
+        self.deepfake_detector = None
+        self.database_manager = None
+        self.auth_engine = None
+        self.api = None
         
         # Performance monitoring
         self.perf_utils = PerformanceUtils()
@@ -232,6 +245,27 @@ class FaceRecognitionSystem:
                 device=self.config.models.device,
                 embedding_size=self.config.models.embedding_dim
             )
+            
+            # Initialize liveness detector
+            logger.info("Loading liveness detection model...")
+            self.liveness_detector = LivenessDetector(
+                model_type=self.config.models.liveness_model_type,
+                device=self.config.models.device,
+                input_size=self.config.models.liveness_input_size,
+                threshold=self.config.models.liveness_threshold
+            )
+            
+            # Initialize deepfake detector
+            logger.info("Loading deepfake detection model...")
+            self.deepfake_detector = DeepfakeDetector(
+                model_name=self.config.models.deepfake_model,
+                device=self.config.models.device,
+                threshold=self.config.models.deepfake_threshold,
+                image_size=self.config.models.deepfake_image_size
+            )
+            
+            logger.info("All ML models initialized successfully")
+            return True
             
         except Exception as e:
             logger.error(f"Model initialization error: {str(e)}")
@@ -476,6 +510,20 @@ def main():
             system.config.api.port = args.port
         if args.debug:
             system.config.api.debug = True
-
         
-       
+        # Print system status
+        status = system.get_system_status()
+        logger.info(f"System status: {status}")
+        
+        # Run system
+        system.run()
+        
+    except KeyboardInterrupt:
+        logger.info("Interrupted by user")
+    except Exception as e:
+        logger.error(f"Main execution error: {str(e)}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

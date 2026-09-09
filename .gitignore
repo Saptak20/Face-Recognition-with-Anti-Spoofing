@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Runtime data and generated embeddings
+data/embeddings/
+data/backups/
+*.faiss
+
+# Logs (keep empty placeholder if needed, ignore runtime logs)
+logs/*.log
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.template
+
+# Caches
+.cache/
+.pytest_cache/
