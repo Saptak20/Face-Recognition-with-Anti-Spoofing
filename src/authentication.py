@@ -258,30 +258,32 @@ class AuthenticationEngine:
         
         logger.info("AuthenticationEngine initialized")
     
-    def register_user(self, 
+    def register_user(self,
                      user_id: str,
                      name: str,
                      email: Optional[str] = None,
                      phone: Optional[str] = None,
                      capture_duration: int = 5,
-                     min_quality_score: float = 0.7) -> Dict[str, Any]:
+                     min_quality_score: float = 0.7,
+                     frames: Optional[List[np.ndarray]] = None) -> Dict[str, Any]:
         """
         Register a new user with face capture and embedding extraction.
-        
+
         Args:
             user_id: Unique user identifier
             name: User's name
             email: User's email address
             phone: User's phone number
-            capture_duration: Duration for face capture in seconds
+            capture_duration: Duration for face capture in seconds (used if frames not provided)
             min_quality_score: Minimum quality score for accepted faces
-            
+            frames: Optional list of pre-captured face frames (BGR numpy arrays). If provided, webcam capture is skipped.
+
         Returns:
             Registration result dictionary
         """
         try:
             logger.info(f"Starting user registration for: {user_id}")
-            
+
             # Add user to database
             user_added = self.database_manager.add_user(
                 user_id=user_id,
@@ -290,70 +292,75 @@ class AuthenticationEngine:
                 phone=phone,
                 metadata={'registration_time': datetime.now().isoformat()}
             )
-            
+
             if not user_added:
                 return {
                     'success': False,
                     'message': 'User already exists or database error',
                     'user_id': user_id
                 }
-            
-            # Capture faces
-            captured_faces = self.face_capture.capture_from_webcam(duration=capture_duration)
-            
+
+            # Get faces: either from provided frames or webcam capture
+            if frames is not None:
+                captured_faces = frames
+                logger.info(f"Using {len(captured_faces)} provided frames for registration")
+            else:
+                captured_faces = self.face_capture.capture_from_webcam(duration=capture_duration)
+                logger.info(f"Captured {len(captured_faces)} faces from webcam")
+
             if not captured_faces:
                 return {
                     'success': False,
                     'message': 'No faces captured during registration',
                     'user_id': user_id
                 }
-            
+
             # Process captured faces
             valid_embeddings = []
             quality_scores = []
-            
+
             for i, face in enumerate(captured_faces):
                 # Check face quality
                 quality_metrics = self.face_capture.validate_face_quality(face)
                 overall_quality = quality_metrics.get('overall_quality', 0.0)
-                
+
                 if overall_quality >= min_quality_score:
                     # Extract embedding
                     embedding = self.embedding_extractor.extract_embedding(face)
-                    
+
                     if embedding is not None:
                         valid_embeddings.append(embedding)
                         quality_scores.append(overall_quality)
                         logger.info(f"Valid embedding {i+1} extracted (quality: {overall_quality:.3f})")
-            
+
             if not valid_embeddings:
                 return {
                     'success': False,
                     'message': f'No high-quality faces found (minimum quality: {min_quality_score})',
                     'user_id': user_id
                 }
-            
+
             # Select best embedding (highest quality)
             best_idx = np.argmax(quality_scores)
             best_embedding = valid_embeddings[best_idx]
             best_quality = quality_scores[best_idx]
-            
+
             # Add embedding to database
             embedding_id = self.database_manager.add_embedding(
                 user_id=user_id,
                 embedding=best_embedding,
                 quality_score=best_quality
             )
-            
+
             if embedding_id is None:
                 return {
                     'success': False,
                     'message': 'Failed to store face embedding',
                     'user_id': user_id
                 }
-            
+
             logger.info(f"User {user_id} registered successfully with {len(valid_embeddings)} face samples")
-            
+
             return {
                 'success': True,
                 'message': 'User registered successfully',
@@ -363,7 +370,7 @@ class AuthenticationEngine:
                 'total_faces_captured': len(captured_faces),
                 'valid_faces_processed': len(valid_embeddings)
             }
-            
+
         except Exception as e:
             logger.error(f"User registration error: {str(e)}")
             return {
@@ -372,23 +379,25 @@ class AuthenticationEngine:
                 'user_id': user_id
             }
     
-    def authenticate_user(self, 
+    def authenticate_user(self,
                          capture_duration: int = 3,
-                         ip_address: str = "unknown") -> Dict[str, Any]:
+                         ip_address: str = "unknown",
+                         frame: Optional[np.ndarray] = None) -> Dict[str, Any]:
         """
         Authenticate user using comprehensive face recognition pipeline.
-        
+
         Args:
-            capture_duration: Duration for face capture in seconds
+            capture_duration: Duration for face capture in seconds (used if frame not provided)
             ip_address: Client IP address for logging
-            
+            frame: Optional pre-captured face frame (BGR numpy array). If provided, webcam capture is skipped.
+
         Returns:
             Authentication result dictionary
         """
         try:
             start_time = time.time()
             logger.info("Starting user authentication")
-            
+
             # Check rate limiting
             if not self._check_rate_limit(ip_address):
                 return {
@@ -396,10 +405,15 @@ class AuthenticationEngine:
                     'message': 'Too many authentication attempts. Please try again later.',
                     'confidence': 0.0
                 }
-            
-            # Capture face
-            captured_faces = self.face_capture.capture_from_webcam(duration=capture_duration)
-            
+
+            # Get face: either from provided frame or webcam capture
+            if frame is not None:
+                captured_faces = [frame]
+                logger.info("Using provided frame for authentication")
+            else:
+                captured_faces = self.face_capture.capture_from_webcam(duration=capture_duration)
+                logger.info(f"Captured {len(captured_faces)} faces from webcam")
+
             if not captured_faces:
                 self._log_authentication(None, False, 0.0, 0.0, 0.0, ip_address)
                 return {
@@ -407,19 +421,19 @@ class AuthenticationEngine:
                     'message': 'No face detected during authentication',
                     'confidence': 0.0
                 }
-            
+
             # Use the best quality face
             best_face = None
             best_quality = 0.0
-            
+
             for face in captured_faces:
                 quality_metrics = self.face_capture.validate_face_quality(face)
                 quality = quality_metrics.get('overall_quality', 0.0)
-                
+
                 if quality > best_quality:
                     best_quality = quality
                     best_face = face
-            
+
             if best_face is None or best_quality < 0.3:
                 self._log_authentication(None, False, 0.0, 0.0, 0.0, ip_address)
                 return {
@@ -427,11 +441,11 @@ class AuthenticationEngine:
                     'message': 'Face quality too low for authentication',
                     'confidence': 0.0
                 }
-            
+
             # Step 1: Liveness Detection
             liveness_result = self.liveness_detector.comprehensive_liveness_check(best_face)
             liveness_score = liveness_result.get('combined_score', 0.0)
-            
+
             if liveness_score < self.liveness_threshold:
                 self._log_authentication(None, False, 0.0, liveness_score, 0.0, ip_address)
                 return {
@@ -440,11 +454,11 @@ class AuthenticationEngine:
                     'confidence': liveness_score,
                     'liveness_score': liveness_score
                 }
-            
+
             # Step 2: Deepfake Detection
             deepfake_result = self.deepfake_detector.comprehensive_deepfake_analysis(best_face)
             real_score = 1.0 - deepfake_result.get('combined_fake_score', 0.0)
-            
+
             if real_score < self.deepfake_threshold:
                 self._log_authentication(None, False, 0.0, liveness_score, real_score, ip_address)
                 return {
@@ -454,10 +468,10 @@ class AuthenticationEngine:
                     'liveness_score': liveness_score,
                     'deepfake_score': real_score
                 }
-            
+
             # Step 3: Face Recognition
             embedding = self.embedding_extractor.extract_embedding(best_face)
-            
+
             if embedding is None:
                 self._log_authentication(None, False, 0.0, liveness_score, real_score, ip_address)
                 return {
@@ -465,12 +479,12 @@ class AuthenticationEngine:
                     'message': 'Failed to extract face features',
                     'confidence': 0.0
                 }
-            
+
             # Find matching user
             auth_result = self.database_manager.authenticate_user(
                 embedding, threshold=self.face_similarity_threshold
             )
-            
+
             if auth_result is None:
                 self._log_authentication(None, False, 0.0, liveness_score, real_score, ip_address)
                 return {
@@ -480,16 +494,16 @@ class AuthenticationEngine:
                     'liveness_score': liveness_score,
                     'deepfake_score': real_score
                 }
-            
+
             # Calculate overall confidence
             face_similarity = auth_result['similarity']
             overall_confidence = self._calculate_overall_confidence(
                 face_similarity, liveness_score, real_score
             )
-            
+
             if overall_confidence < self.overall_confidence_threshold:
                 self._log_authentication(
-                    auth_result['user_id'], False, overall_confidence, 
+                    auth_result['user_id'], False, overall_confidence,
                     liveness_score, real_score, ip_address
                 )
                 return {
@@ -501,14 +515,14 @@ class AuthenticationEngine:
                     'liveness_score': liveness_score,
                     'deepfake_score': real_score
                 }
-            
+
             # Multi-factor authentication if enabled
             if self.enable_mfa and auth_result.get('email'):
                 otp = self.otp_manager.generate_otp(auth_result['user_id'])
-                
+
                 # In a real implementation, send OTP via email/SMS
                 logger.info(f"MFA required for user {auth_result['user_id']}, OTP: {otp}")
-                
+
                 return {
                     'success': False,
                     'message': 'Multi-factor authentication required',
@@ -519,17 +533,17 @@ class AuthenticationEngine:
                     'liveness_score': liveness_score,
                     'deepfake_score': real_score
                 }
-            
+
             # Successful authentication
             processing_time = time.time() - start_time
-            
+
             self._log_authentication(
                 auth_result['user_id'], True, overall_confidence,
                 liveness_score, real_score, ip_address
             )
-            
+
             logger.info(f"User {auth_result['user_id']} authenticated successfully in {processing_time:.2f}s")
-            
+
             return {
                 'success': True,
                 'message': 'Authentication successful',
@@ -541,7 +555,7 @@ class AuthenticationEngine:
                 'deepfake_score': real_score,
                 'processing_time': processing_time
             }
-            
+
         except Exception as e:
             logger.error(f"Authentication error: {str(e)}")
             return {

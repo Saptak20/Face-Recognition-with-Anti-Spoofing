@@ -5,7 +5,7 @@ FastAPI-based REST API for face recognition system providing endpoints
 for user registration, authentication, and system management.
 """
 
-from fastapi import FastAPI, HTTPException, Depends, File, UploadFile, Request
+from fastapi import FastAPI, HTTPException, Depends, File, UploadFile, Request, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import JSONResponse
@@ -288,7 +288,9 @@ class FaceRecognitionAPI:
                 else:
                     logger.warning(f"Authentication failed: {result['message']}")
                     return AuthenticationResponse(**result)
-                    
+
+            except HTTPException:
+                raise
             except Exception as e:
                 logger.error(f"Authentication endpoint error: {str(e)}")
                 return AuthenticationResponse(
@@ -296,7 +298,147 @@ class FaceRecognitionAPI:
                     message=f"Authentication failed: {str(e)}",
                     confidence=0.0
                 )
-        
+
+        @self.app.post("/api/v1/register-frame", response_model=RegistrationResponse)
+        async def register_user_frame(
+            user_id: str = Form(...),
+            name: str = Form(...),
+            email: Optional[str] = Form(None),
+            phone: Optional[str] = Form(None),
+            min_quality_score: Optional[float] = Form(0.7),
+            file: UploadFile = File(...),
+            client_request: Request = None
+        ):
+            """
+            Register a new user with an uploaded face image/frame.
+            
+            Args:
+                user_id: Unique user identifier
+                name: User's name
+                email: User's email address (optional)
+                phone: User's phone number (optional)
+                min_quality_score: Minimum quality score for accepted faces (default 0.7)
+                file: Uploaded image file (multipart/form-data)
+                client_request: FastAPI request object
+                
+            Returns:
+                Registration result
+            """
+            try:
+                if not self.auth_engine:
+                    raise HTTPException(status_code=500, detail="Authentication engine not initialized")
+
+                client_ip = client_request.client.host if client_request else "unknown"
+                logger.info(f"User registration (frame) request from {client_ip} for user: {user_id}")
+
+                # Read and validate image
+                contents = await file.read()
+                
+                try:
+                    image = Image.open(io.BytesIO(contents))
+                    image_np = np.array(image)
+                    
+                    # Convert RGB to BGR for OpenCV processing
+                    if len(image_np.shape) == 3 and image_np.shape[2] == 3:
+                        image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+                    else:
+                        image_bgr = image_np
+                    
+                    if len(image_bgr.shape) != 3 or image_bgr.shape[2] != 3:
+                        raise HTTPException(status_code=400, detail="Invalid image format. RGB images required.")
+                        
+                except Exception as e:
+                    raise HTTPException(status_code=400, detail=f"Invalid image file: {str(e)}")
+
+                # Call authentication engine for registration with provided frame
+                result = self.auth_engine.register_user(
+                    user_id=user_id,
+                    name=name,
+                    email=email,
+                    phone=phone,
+                    min_quality_score=min_quality_score,
+                    frames=[image_bgr]
+                )
+
+                if result['success']:
+                    logger.info(f"User {user_id} registered successfully via frame upload")
+                    return RegistrationResponse(**result)
+                else:
+                    logger.warning(f"User registration failed: {result['message']}")
+                    raise HTTPException(status_code=400, detail=result['message'])
+                    
+            except HTTPException:
+                raise
+            except Exception as e:
+                logger.error(f"Registration frame endpoint error: {str(e)}")
+                raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
+
+        @self.app.post("/api/v1/authenticate-frame", response_model=AuthenticationResponse)
+        async def authenticate_user_frame(
+            file: UploadFile = File(...),
+            client_request: Request = None
+        ):
+            """
+            Authenticate user using an uploaded face image/frame.
+            
+            Args:
+                file: Uploaded image file (multipart/form-data)
+                client_request: FastAPI request object
+                
+            Returns:
+                Authentication result
+            """
+            try:
+                if not self.auth_engine:
+                    raise HTTPException(status_code=500, detail="Authentication engine not initialized")
+
+                client_ip = client_request.client.host if client_request else "unknown"
+                logger.info(f"Authentication (frame) request from {client_ip}")
+
+                # Read and validate image
+                contents = await file.read()
+                
+                try:
+                    image = Image.open(io.BytesIO(contents))
+                    image_np = np.array(image)
+                    
+                    # Convert RGB to BGR for OpenCV processing
+                    if len(image_np.shape) == 3 and image_np.shape[2] == 3:
+                        image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+                    else:
+                        image_bgr = image_np
+                    
+                    if len(image_bgr.shape) != 3 or image_bgr.shape[2] != 3:
+                        raise HTTPException(status_code=400, detail="Invalid image format. RGB images required.")
+                        
+                except Exception as e:
+                    raise HTTPException(status_code=400, detail=f"Invalid image file: {str(e)}")
+
+                # Call authentication engine with provided frame
+                result = self.auth_engine.authenticate_user(
+                    frame=image_bgr,
+                    ip_address=client_ip
+                )
+
+                # Return appropriate HTTP status
+                if result['success']:
+                    logger.info(f"Authentication successful for user: {result.get('user_id', 'unknown')}")
+                    return AuthenticationResponse(**result)
+                elif result.get('mfa_required', False):
+                    logger.info(f"MFA required for user: {result.get('user_id', 'unknown')}")
+                    return AuthenticationResponse(**result)
+                else:
+                    logger.warning(f"Authentication failed: {result['message']}")
+                    return AuthenticationResponse(**result)
+                    
+            except Exception as e:
+                logger.error(f"Authentication frame endpoint error: {str(e)}")
+                return AuthenticationResponse(
+                    success=False,
+                    message=f"Authentication failed: {str(e)}",
+                    confidence=0.0
+                )
+
         @self.app.post("/api/v1/verify-mfa")
         async def verify_mfa(request: MFARequest):
             """
