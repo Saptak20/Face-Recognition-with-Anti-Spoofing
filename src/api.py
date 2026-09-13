@@ -431,6 +431,8 @@ class FaceRecognitionAPI:
                     logger.warning(f"Authentication failed: {result['message']}")
                     return AuthenticationResponse(**result)
                     
+            except HTTPException:
+                raise
             except Exception as e:
                 logger.error(f"Authentication frame endpoint error: {str(e)}")
                 return AuthenticationResponse(
@@ -651,11 +653,18 @@ class FaceRecognitionAPI:
         # Exception handlers
         @self.app.exception_handler(404)
         async def not_found_handler(request: Request, exc: HTTPException):
+            detail = getattr(exc, 'detail', None)
+            if detail and detail != "Not Found":
+                message = detail
+            else:
+                message = "The requested resource was not found"
+                detail = message
             return JSONResponse(
                 status_code=404,
                 content={
                     "error": "Not Found",
-                    "message": "The requested resource was not found",
+                    "message": message,
+                    "detail": detail,
                     "path": request.url.path,
                     "timestamp": datetime.now().isoformat()
                 }
