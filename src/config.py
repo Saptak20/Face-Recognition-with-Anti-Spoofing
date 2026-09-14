@@ -298,43 +298,59 @@ class ConfigManager:
                 f"{self._env_prefix}LIVENESS_THRESHOLD": ["models", "liveness_threshold"],
                 f"{self._env_prefix}DEEPFAKE_THRESHOLD": ["models", "deepfake_threshold"],
                 
-                # Database
+                # Database / Persistence
                 f"{self._env_prefix}DB_PATH": ["database", "sqlite_db_path"],
                 f"{self._env_prefix}FAISS_INDEX_PATH": ["database", "faiss_index_path"],
+                f"{self._env_prefix}FAISS_INDEX_TYPE": ["database", "faiss_index_type"],
+                f"{self._env_prefix}BACKUP_ENABLED": ["database", "backup_enabled"],
+                f"{self._env_prefix}BACKUP_PATH": ["database", "backup_path"],
+                f"{self._env_prefix}MAX_BACKUPS": ["database", "max_backups"],
                 
                 # Authentication
                 f"{self._env_prefix}FACE_SIMILARITY_THRESHOLD": ["authentication", "face_similarity_threshold"],
+                f"{self._env_prefix}OVERALL_CONFIDENCE_THRESHOLD": ["authentication", "overall_confidence_threshold"],
                 f"{self._env_prefix}ENABLE_MFA": ["authentication", "enable_mfa"],
                 f"{self._env_prefix}SENDER_EMAIL": ["authentication", "sender_email"],
                 f"{self._env_prefix}SENDER_PASSWORD": ["authentication", "sender_password"],
+                f"{self._env_prefix}SMTP_SERVER": ["authentication", "smtp_server"],
+                f"{self._env_prefix}SMTP_PORT": ["authentication", "smtp_port"],
                 
                 # API
                 f"{self._env_prefix}HOST": ["api", "host"],
                 f"{self._env_prefix}PORT": ["api", "port"],
                 f"{self._env_prefix}DEBUG": ["api", "debug"],
+                f"{self._env_prefix}WORKERS": ["api", "workers"],
                 f"{self._env_prefix}API_KEY": ["api", "api_key"],
                 f"{self._env_prefix}JWT_SECRET": ["api", "jwt_secret_key"],
+                f"{self._env_prefix}API_KEY_REQUIRED": ["api", "api_key_required"],
+                f"{self._env_prefix}ALLOWED_ORIGINS": ["api", "allowed_origins"],
                 
                 # Logging
                 f"{self._env_prefix}LOG_LEVEL": ["logging", "level"],
                 f"{self._env_prefix}LOG_FILE": ["logging", "file_path"],
+                f"{self._env_prefix}LOG_FILE_ENABLED": ["logging", "file_enabled"],
                 
                 # System
                 f"{self._env_prefix}ENVIRONMENT": ["environment"],
                 f"{self._env_prefix}DATA_DIR": ["data_dir"],
+                f"{self._env_prefix}MODELS_DIR": ["models_dir"],
+                f"{self._env_prefix}LOGS_DIR": ["logs_dir"],
             }
             
             for env_var, path in env_mappings.items():
                 value = os.getenv(env_var)
                 if value is not None:
                     # Type conversion
-                    if env_var.endswith(('_THRESHOLD', '_DIM', '_SIZE', '_PORT', '_LENGTH', '_MINUTES', '_HOURS', '_COUNT')):
+                    if env_var.endswith(('_THRESHOLD', '_DIM', '_SIZE', '_PORT', '_LENGTH', '_MINUTES', '_HOURS', '_COUNT', '_WORKERS', '_MAX_BACKUPS')):
                         try:
                             value = float(value) if '.' in value else int(value)
                         except ValueError:
                             continue
                     elif env_var.endswith(('_DEBUG', '_ENABLED', '_REQUIRED', '_MFA')):
                         value = value.lower() in ('true', '1', 'yes', 'on')
+                    elif env_var.endswith('_ORIGINS'):
+                        # Parse comma-separated origins
+                        value = [origin.strip() for origin in value.split(',') if origin.strip()]
                     
                     # Set nested value
                     self._set_nested_value(env_config, path, value)
@@ -516,6 +532,29 @@ class ConfigManager:
             if self.config.api.port < 1 or self.config.api.port > 65535:
                 errors.append(f"Invalid port number: {self.config.api.port}")
             
+            # Production-specific validation
+            if self.config.environment == "production":
+                # Check for required secrets
+                if not self.config.api.jwt_secret_key or self.config.api.jwt_secret_key == "your-secret-key-change-this":
+                    errors.append("JWT secret key must be set via FACE_RECOGNITION_JWT_SECRET in production")
+
+                if self.config.api.api_key_required and not self.config.api.api_key:
+                    errors.append("API key must be set via FACE_RECOGNITION_API_KEY when API key auth is enabled")
+
+                if self.config.authentication.enable_mfa:
+                    if not self.config.authentication.sender_email:
+                        errors.append("MFA sender email must be set via FACE_RECOGNITION_SENDER_EMAIL in production")
+                    if not self.config.authentication.sender_password:
+                        errors.append("MFA sender password must be set via FACE_RECOGNITION_SENDER_PASSWORD in production")
+
+                # Warn about overly permissive CORS
+                if self.config.api.allowed_origins == ["*"]:
+                    warnings.append("CORS allowed_origins is set to ['*'] which is not recommended for production")
+
+                # Warn about debug mode
+                if self.config.api.debug:
+                    warnings.append("Debug mode is enabled in production environment")
+
             return {
                 "valid": len(errors) == 0,
                 "errors": errors,

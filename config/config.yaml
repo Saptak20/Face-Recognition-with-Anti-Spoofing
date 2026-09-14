@@ -1,5 +1,6 @@
 # Face Recognition System Configuration
 # Based on the system configuration schema documented in README.md and src/config.py
+# All sensitive values should be set via environment variables (see .env.example)
 
 # Model Configuration
 models:
@@ -15,55 +16,55 @@ models:
   deepfake_model: "google/vit-base-patch16-224"
   deepfake_image_size: 224
   deepfake_threshold: 0.5
-  device: "cpu"  # "cpu" or "cuda"
+  device: "cpu"  # "cpu" or "cuda" - override with FACE_RECOGNITION_DEVICE
 
 # Database Configuration
 database:
-  sqlite_db_path: "data/face_recognition.db"
-  faiss_index_path: "data/embeddings/face_index.faiss"
-  faiss_index_type: "IndexFlatIP"
-  backup_enabled: true
+  sqlite_db_path: "data/face_recognition.db"  # override with FACE_RECOGNITION_DB_PATH
+  faiss_index_path: "data/embeddings/face_index.faiss"  # override with FACE_RECOGNITION_FAISS_INDEX_PATH
+  faiss_index_type: "IndexFlatIP"  # override with FACE_RECOGNITION_FAISS_INDEX_TYPE
+  backup_enabled: true  # override with FACE_RECOGNITION_BACKUP_ENABLED
   backup_interval_hours: 24
-  backup_path: "data/backups"
-  max_backups: 7
+  backup_path: "data/backups"  # override with FACE_RECOGNITION_BACKUP_PATH
+  max_backups: 7  # override with FACE_RECOGNITION_MAX_BACKUPS
 
 # Authentication Configuration
 authentication:
-  face_similarity_threshold: 0.7
-  overall_confidence_threshold: 0.6
+  face_similarity_threshold: 0.7  # override with FACE_RECOGNITION_FACE_SIMILARITY_THRESHOLD
+  overall_confidence_threshold: 0.6  # override with FACE_RECOGNITION_OVERALL_CONFIDENCE_THRESHOLD
   face_similarity_weight: 0.5
   liveness_weight: 0.3
   deepfake_weight: 0.2
   max_attempts_per_hour: 5
-  enable_mfa: false
+  enable_mfa: false  # override with FACE_RECOGNITION_ENABLE_MFA
   otp_length: 6
   otp_expiry_minutes: 5
-  smtp_server: "smtp.gmail.com"
-  smtp_port: 587
-  sender_email: ""
-  sender_password: ""
+  smtp_server: "smtp.gmail.com"  # override with FACE_RECOGNITION_SMTP_SERVER
+  smtp_port: 587  # override with FACE_RECOGNITION_SMTP_PORT
+  sender_email: ""  # MUST be set via FACE_RECOGNITION_SENDER_EMAIL in production
+  sender_password: ""  # MUST be set via FACE_RECOGNITION_SENDER_PASSWORD in production
 
 # API Configuration
 api:
-  host: "0.0.0.0"
-  port: 8000
-  debug: false
-  workers: 1
-  allowed_origins:
+  host: "0.0.0.0"  # override with FACE_RECOGNITION_HOST
+  port: 8000  # override with FACE_RECOGNITION_PORT (Render sets PORT env var)
+  debug: false  # override with FACE_RECOGNITION_DEBUG
+  workers: 1  # override with FACE_RECOGNITION_WORKERS
+  allowed_origins:  # override with FACE_RECOGNITION_ALLOWED_ORIGINS (comma-separated)
     - "*"
   allow_credentials: true
-  api_key_required: false
-  api_key: ""
-  jwt_secret_key: "your-secret-key-change-this"
+  api_key_required: false  # override with FACE_RECOGNITION_API_KEY_REQUIRED
+  api_key: ""  # MUST be set via FACE_RECOGNITION_API_KEY if api_key_required=true
+  jwt_secret_key: "your-secret-key-change-this"  # MUST be set via FACE_RECOGNITION_JWT_SECRET in production
   max_request_size: 10485760  # 10MB
   request_timeout: 30
 
 # Logging Configuration
 logging:
-  level: "INFO"
+  level: "INFO"  # override with FACE_RECOGNITION_LOG_LEVEL
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-  file_enabled: true
-  file_path: "logs/face_recognition.log"
+  file_enabled: true  # override with FACE_RECOGNITION_LOG_FILE_ENABLED
+  file_path: "logs/face_recognition.log"  # override with FACE_RECOGNITION_LOG_FILE
   file_max_size_mb: 10
   file_backup_count: 5
   console_enabled: true
@@ -71,8 +72,8 @@ logging:
 
 # System Paths and Environment
 project_root: "."
-data_dir: "data"
-models_dir: "models"
-logs_dir: "logs"
+data_dir: "data"  # override with FACE_RECOGNITION_DATA_DIR
+models_dir: "models"  # override with FACE_RECOGNITION_MODELS_DIR
+logs_dir: "logs"  # override with FACE_RECOGNITION_LOGS_DIR
 config_dir: "config"
-environment: "development"
+environment: "development"  # override with FACE_RECOGNITION_ENVIRONMENT

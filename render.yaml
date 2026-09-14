@@ -1,16 +1,61 @@
 services:
   - type: web
-    name: face-recognition-api
+    name: aegisid
     runtime: docker
     autoDeploy: true
     plan: starter
+    # Persistent disk for SQLite, FAISS index, backups, and logs
+    disk:
+      name: aegisid-data
+      mountPath: /var/data
+      sizeGB: 2
     envVars:
+      # Required: Set these in Render dashboard (do not commit values)
+      - key: FACE_RECOGNITION_JWT_SECRET
+        sync: false
+      - key: FACE_RECOGNITION_API_KEY
+        sync: false
+      - key: FACE_RECOGNITION_SENDER_EMAIL
+        sync: false
+      - key: FACE_RECOGNITION_SENDER_PASSWORD
+        sync: false
+
+      # Optional: Override defaults if needed
       - key: LOG_LEVEL
         value: INFO
       - key: ENABLE_CORS
         value: "true"
-      - key: API_HOST
-        value: 0.0.0.0
-      - key: API_PORT
-        value: "8000"
+      - key: FACE_RECOGNITION_ENVIRONMENT
+        value: production
+      - key: FACE_RECOGNITION_DEBUG
+        value: "false"
+      - key: FACE_RECOGNITION_API_KEY_REQUIRED
+        value: "true"
+      - key: FACE_RECOGNITION_ALLOWED_ORIGINS
+        value: ""  # Set to comma-separated list, e.g. "https://app.example.com,https://admin.example.com"
+      - key: FACE_RECOGNITION_ENABLE_MFA
+        value: "false"
+      - key: FACE_RECOGNITION_SMTP_SERVER
+        value: smtp.gmail.com
+      - key: FACE_RECOGNITION_SMTP_PORT
+        value: "587"
+
+      # Persistence paths (use Render disk mount)
+      - key: FACE_RECOGNITION_DB_PATH
+        value: /var/data/face_recognition.db
+      - key: FACE_RECOGNITION_FAISS_INDEX_PATH
+        value: /var/data/embeddings/face_index.faiss
+      - key: FACE_RECOGNITION_BACKUP_PATH
+        value: /var/data/backups
+      - key: FACE_RECOGNITION_DATA_DIR
+        value: /var/data
+      - key: FACE_RECOGNITION_LOGS_DIR
+        value: /var/data/logs
+      - key: FACE_RECOGNITION_MODELS_DIR
+        value: /var/data/models
+      - key: FACE_RECOGNITION_LOG_FILE
+        value: /var/data/logs/face_recognition.log
+      - key: FACE_RECOGNITION_LOG_FILE_ENABLED
+        value: "true"
+
     healthCheckPath: /api/v1/health
