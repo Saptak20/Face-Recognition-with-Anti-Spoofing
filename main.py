@@ -247,22 +247,30 @@ class FaceRecognitionSystem:
             )
             
             # Initialize liveness detector
-            logger.info("Loading liveness detection model...")
-            self.liveness_detector = LivenessDetector(
-                model_type=self.config.models.liveness_model_type,
-                device=self.config.models.device,
-                input_size=self.config.models.liveness_input_size,
-                threshold=self.config.models.liveness_threshold
-            )
+            if not self.config.models.skip_optional_models:
+                logger.info("Loading liveness detection model...")
+                self.liveness_detector = LivenessDetector(
+                    model_type=self.config.models.liveness_model_type,
+                    device=self.config.models.device,
+                    input_size=self.config.models.liveness_input_size,
+                    threshold=self.config.models.liveness_threshold
+                )
+            else:
+                logger.info("Skipping liveness detection model (memory optimization)")
+                self.liveness_detector = None
             
             # Initialize deepfake detector
-            logger.info("Loading deepfake detection model...")
-            self.deepfake_detector = DeepfakeDetector(
-                model_name=self.config.models.deepfake_model,
-                device=self.config.models.device,
-                threshold=self.config.models.deepfake_threshold,
-                image_size=self.config.models.deepfake_image_size
-            )
+            if not self.config.models.skip_optional_models:
+                logger.info("Loading deepfake detection model...")
+                self.deepfake_detector = DeepfakeDetector(
+                    model_name=self.config.models.deepfake_model,
+                    device=self.config.models.device,
+                    threshold=self.config.models.deepfake_threshold,
+                    image_size=self.config.models.deepfake_image_size
+                )
+            else:
+                logger.info("Skipping deepfake detection model (memory optimization)")
+                self.deepfake_detector = None
             
             logger.info("All ML models initialized successfully")
             return True

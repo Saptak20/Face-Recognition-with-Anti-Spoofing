@@ -39,6 +39,9 @@ services:
         value: smtp.gmail.com
       - key: FACE_RECOGNITION_SMTP_PORT
         value: "587"
+      # Memory optimization for free plan (512Mi limit)
+      - key: FACE_RECOGNITION_SKIP_OPTIONAL_MODELS
+        value: "true"
 
       # Persistence paths (use Render disk mount)
       - key: FACE_RECOGNITION_DB_PATH

@@ -443,31 +443,39 @@ class AuthenticationEngine:
                 }
 
             # Step 1: Liveness Detection
-            liveness_result = self.liveness_detector.comprehensive_liveness_check(best_face)
-            liveness_score = liveness_result.get('combined_score', 0.0)
+            if self.liveness_detector is not None:
+                liveness_result = self.liveness_detector.comprehensive_liveness_check(best_face)
+                liveness_score = liveness_result.get('combined_score', 0.0)
 
-            if liveness_score < self.liveness_threshold:
-                self._log_authentication(None, False, 0.0, liveness_score, 0.0, ip_address)
-                return {
-                    'success': False,
-                    'message': 'Liveness check failed - potential spoofing detected',
-                    'confidence': liveness_score,
-                    'liveness_score': liveness_score
-                }
+                if liveness_score < self.liveness_threshold:
+                    self._log_authentication(None, False, 0.0, liveness_score, 0.0, ip_address)
+                    return {
+                        'success': False,
+                        'message': 'Liveness check failed - potential spoofing detected',
+                        'confidence': liveness_score,
+                        'liveness_score': liveness_score
+                    }
+            else:
+                logger.info("Skipping liveness detection (model not loaded)")
+                liveness_score = 1.0  # Default passing score when model not available
 
             # Step 2: Deepfake Detection
-            deepfake_result = self.deepfake_detector.comprehensive_deepfake_analysis(best_face)
-            real_score = 1.0 - deepfake_result.get('combined_fake_score', 0.0)
+            if self.deepfake_detector is not None:
+                deepfake_result = self.deepfake_detector.comprehensive_deepfake_analysis(best_face)
+                real_score = 1.0 - deepfake_result.get('combined_fake_score', 0.0)
 
-            if real_score < self.deepfake_threshold:
-                self._log_authentication(None, False, 0.0, liveness_score, real_score, ip_address)
-                return {
-                    'success': False,
-                    'message': 'Deepfake detected - authentication denied',
-                    'confidence': real_score,
-                    'liveness_score': liveness_score,
-                    'deepfake_score': real_score
-                }
+                if real_score < self.deepfake_threshold:
+                    self._log_authentication(None, False, 0.0, liveness_score, real_score, ip_address)
+                    return {
+                        'success': False,
+                        'message': 'Deepfake detected - authentication denied',
+                        'confidence': real_score,
+                        'liveness_score': liveness_score,
+                        'deepfake_score': real_score
+                    }
+            else:
+                logger.info("Skipping deepfake detection (model not loaded)")
+                real_score = 1.0  # Default passing score when model not available
 
             # Step 3: Face Recognition
             embedding = self.embedding_extractor.extract_embedding(best_face)

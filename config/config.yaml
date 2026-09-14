@@ -17,6 +17,7 @@ models:
   deepfake_image_size: 224
   deepfake_threshold: 0.5
   device: "cpu"  # "cpu" or "cuda" - override with FACE_RECOGNITION_DEVICE
+  skip_optional_models: false  # override with FACE_RECOGNITION_SKIP_OPTIONAL_MODELS
 
 # Database Configuration
 database:

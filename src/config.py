@@ -44,6 +44,9 @@ class ModelConfig:
     
     # Device configuration
     device: str = 'cpu'  # 'cpu' or 'cuda'
+    
+    # Memory optimization
+    skip_optional_models: bool = False  # Skip liveness and deepfake detectors to save memory
 
 
 @dataclass
@@ -297,6 +300,7 @@ class ConfigManager:
                 f"{self._env_prefix}EMBEDDING_DIM": ["models", "embedding_dim"],
                 f"{self._env_prefix}LIVENESS_THRESHOLD": ["models", "liveness_threshold"],
                 f"{self._env_prefix}DEEPFAKE_THRESHOLD": ["models", "deepfake_threshold"],
+                f"{self._env_prefix}SKIP_OPTIONAL_MODELS": ["models", "skip_optional_models"],
                 
                 # Database / Persistence
                 f"{self._env_prefix}DB_PATH": ["database", "sqlite_db_path"],
@@ -346,7 +350,7 @@ class ConfigManager:
                             value = float(value) if '.' in value else int(value)
                         except ValueError:
                             continue
-                    elif env_var.endswith(('_DEBUG', '_ENABLED', '_REQUIRED', '_MFA')):
+                    elif env_var.endswith(('_DEBUG', '_ENABLED', '_REQUIRED', '_MFA', '_MODELS')):
                         value = value.lower() in ('true', '1', 'yes', 'on')
                     elif env_var.endswith('_ORIGINS'):
                         # Parse comma-separated origins
