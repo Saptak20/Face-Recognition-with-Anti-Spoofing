@@ -1,9 +1,3 @@
-Yep. I read the attached README. The current README is **significantly behind the actual project**: it still describes MTCNN/FaceNet, old webcam-only endpoints, an older Docker setup, and several capabilities that the current implementation either changed or does not actually guarantee.  
-
-So I would **replace the README completely**, rather than patching individual sections.
-
-I’ve also kept the project name exactly as you specified:
-
 # **Face Recognition with Anti-Spoofing**
 
 And I deliberately **did not call it production-grade biometric security**, because our current ML audit showed that the embedding projection head, liveness model, and deepfake classifier still need properly trained weights.
