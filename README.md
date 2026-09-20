@@ -1,497 +1,925 @@
-# Face Recognition System with Anti-Spoofing
+Yep. I read the attached README. The current README is **significantly behind the actual project**: it still describes MTCNN/FaceNet, old webcam-only endpoints, an older Docker setup, and several capabilities that the current implementation either changed or does not actually guarantee.  
 
-A production-grade, real-time face recognition system with advanced anti-spoofing and deepfake detection capabilities. This system provides secure authentication through comprehensive facial analysis, including liveness detection and deepfake prevention.
+So I would **replace the README completely**, rather than patching individual sections.
 
-## 🚀 Features
+I’ve also kept the project name exactly as you specified:
 
+# **Face Recognition with Anti-Spoofing**
 
-### Security Features
-- **Comprehensive Pipeline**: Face capture → Liveness → Deepfake → Identity matching
-- **Confidence Scoring**: Multi-layered confidence calculation with configurable thresholds
-- **Rate Limiting**: Protection against brute force attacks
-- **Audit Logging**: Complete authentication attempt logging
-- **Data Protection**: Secure storage of biometric templates
+And I deliberately **did not call it production-grade biometric security**, because our current ML audit showed that the embedding projection head, liveness model, and deepfake classifier still need properly trained weights.
 
-### Technical Highlights
-- **Modular Architecture**: Clean, SOLID-principle based design
-- **Async Processing**: Non-blocking operations for better performance
-- **Configuration Management**: YAML/JSON config with environment variable support
-- **Production Ready**: Comprehensive logging, monitoring, and error handling
-- **Scalable Design**: Supports horizontal scaling and load balancing
+Here is the updated README, ready to copy-paste directly into `README.md`:
 
-## 📋 System Requirements
+````markdown
+# Face Recognition with Anti-Spoofing
 
-### Hardware Requirements
-- **Minimum**: 4GB RAM, 2-core CPU
-- **Recommended**: 8GB RAM, 4-core CPU, GPU (CUDA compatible)
-- **Storage**: 5GB free space for models and data
+A modular **FastAPI-based face recognition and authentication system** that combines face detection, image quality validation, embedding extraction, similarity matching, liveness detection, deepfake detection, MFA, SQLite, and FAISS.
 
-### Software Requirements
-- **Python**: 3.10 or higher
-- **Operating System**: Windows 10+, Ubuntu 18.04+, macOS 10.15+
-- **Webcam**: For real-time face capture
-- **Internet**: For downloading pretrained models (initial setup)
+The project has been engineered with a strong focus on **API reliability, deployment readiness, persistent storage, testability, and separation between webcam capture and server-side image processing**.
 
-```
-
-### 2. Create Virtual Environment
-```bash
-
-# For GPU support (optional)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-pip install faiss-gpu
-```
-
-### 4. Create Configuration
-```bash
-# Generate sample configuration
-python main.py --create-sample-config
-
-# Edit configuration file
-# config.yaml will be created with default settings
-```
-
-### 5. Initialize Database
-```bash
-# The database will be automatically initialized on first run
-# Or manually initialize:
-python -c "from src.database_manager import DatabaseManager; db = DatabaseManager(); print('Database initialized')"
-```
-
-## ⚙️ Configuration
-
-The system uses a hierarchical configuration system supporting YAML files and environment variables.
-
-### Configuration File Structure
-```yaml
-models:
-  device: "cpu"  # or "cuda"
-  embedding_model: "vggface2"
-  embedding_dim: 512
-  liveness_threshold: 0.5
-  deepfake_threshold: 0.5
-
-database:
-  sqlite_db_path: "data/face_recognition.db"
-  faiss_index_path: "data/embeddings/face_index.faiss"
-  backup_enabled: true
-
-authentication:
-  face_similarity_threshold: 0.7
-  overall_confidence_threshold: 0.6
-  enable_mfa: false
-  max_attempts_per_hour: 5
-
-api:
-  host: "0.0.0.0"
-  port: 8000
-  debug: false
-  allowed_origins: ["*"]
-```
-
-### Environment Variables
-```bash
-# Model Configuration
-export FACE_RECOGNITION_DEVICE=cuda
-export FACE_RECOGNITION_EMBEDDING_MODEL=vggface2
-
-# API Configuration  
-export FACE_RECOGNITION_HOST=0.0.0.0
-export FACE_RECOGNITION_PORT=8000
-export FACE_RECOGNITION_DEBUG=false
-
-# Authentication
-export FACE_RECOGNITION_ENABLE_MFA=true
-export FACE_RECOGNITION_SENDER_EMAIL=your-email@gmail.com
-export FACE_RECOGNITION_SENDER_PASSWORD=your-app-password
-```
-
-## 🚀 Quick Start
-
-### 1. Start the System
-```bash
-# With default configuration
-python main.py
-
-# With custom configuration
-python main.py --config config.yaml
-
-# With command line overrides
-python main.py --host 0.0.0.0 --port 8080 --debug
-```
-
-### 2. Access API Documentation
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/api/v1/health
-
-### 3. Register a User
-```bash
-# Using curl
-curl -X POST "http://localhost:8000/api/v1/register" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "user_id": "john_doe_001",
-       "name": "John Doe",
-       "email": "john.doe@example.com",
-       "capture_duration": 5
-     }'
-```
-
-### 4. Authenticate User
-```bash
-# Using curl
-curl -X POST "http://localhost:8000/api/v1/authenticate" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "capture_duration": 3
-     }'
-```
-
-## 📚 API Reference
-
-### Authentication Endpoints
-
-#### Register User
-```http
-POST /api/v1/register
-Content-Type: application/json
-
-{
-  "user_id": "unique_user_id",
-  "name": "User Name",
-  "email": "user@example.com",
-  "phone": "+1-555-123-4567",
-  "capture_duration": 5,
-  "min_quality_score": 0.7
-}
-```
-
-#### Authenticate User
-```http
-POST /api/v1/authenticate
-Content-Type: application/json
-
-{
-  "capture_duration": 3
-}
-```
-
-#### Verify MFA
-```http
-POST /api/v1/verify-mfa
-Content-Type: application/json
-
-{
-  "user_id": "unique_user_id",
-  "otp": "123456"
-}
-```
-
-### Management Endpoints
-
-#### Get User Information
-```http
-GET /api/v1/users/{user_id}
-Authorization: Bearer <api_key>
-```
-
-#### System Statistics
-```http
-GET /api/v1/stats
-Authorization: Bearer <api_key>
-```
-
-#### Upload Image for Analysis
-```http
-POST /api/v1/upload-image
-Content-Type: multipart/form-data
-
-file: <image_file>
-```
-
-## 🧪 Testing
-
-### Run Unit Tests
-```bash
-# Install test dependencies
-pip install pytest pytest-asyncio pytest-cov
-
-# Run all tests
-pytest tests/
-
-# Run with coverage
-pytest tests/ --cov=src --cov-report=html
-
-# Run specific test category
-pytest tests/test_face_capture.py -v
-```
-
-### Test API Endpoints
-```bash
-# Test registration endpoint
-python tests/test_api_endpoints.py
-
-# Manual testing with curl
-bash tests/test_api_manual.sh
-```
-
-### Performance Benchmarking
-```bash
-# Benchmark model inference times
-python -c "
-from src.main import FaceRecognitionSystem
-system = FaceRecognitionSystem()
-system.initialize()
-print('Embedding extraction:', system.embedding_extractor.benchmark_inference_time())
-print('Liveness detection:', system.liveness_detector.benchmark_inference_time())
-"
-```
-
-## 📊 System Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Face Capture  │    │  Liveness Det.  │    │ Deepfake Det.   │
-│   (MTCNN + CV)  │───▶│  (CNN/MobileNet)│───▶│  (ViT/Transformer)│
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│ Embedding Ext.  │    │ Authentication  │    │    Database     │
-│   (FaceNet)     │───▶│    Engine       │───▶│ (SQLite+FAISS)  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   FastAPI       │    │      MFA        │    │   Monitoring    │
-│   (REST API)    │    │   (OTP/Email)   │    │   & Logging     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
-
-## 🔧 Development
-
-### Project Structure
-```
-face_recognition_system/
-├── src/                          # Source code
-│   ├── face_capture.py          # Face detection and capture
-│   ├── embedding_extraction.py  # Face embedding extraction  
-│   ├── liveness_detection.py    # Anti-spoofing detection
-│   ├── deepfake_detection.py    # Deepfake detection
-│   ├── database_manager.py      # Database operations
-│   ├── authentication.py        # Authentication logic
-│   ├── api.py                   # FastAPI endpoints
-│   ├── config.py                # Configuration management
-│   └── utils.py                 # Utility functions
-├── tests/                       # Unit tests
-├── data/                        # Data storage
-│   ├── embeddings/              # FAISS index files
-│   └── backups/                 # Database backups
-├── models/                      # Pretrained models
-├── logs/                        # Application logs
-├── config/                      # Configuration files
-├── main.py                      # Application entry point
-├── requirements.txt             # Python dependencies
-└── README.md                    # This file
-```
-
-### Adding New Features
-
-1. **New Detection Method**: Extend `liveness_detection.py` or `deepfake_detection.py`
-2. **New API Endpoint**: Add to `api.py` and update documentation
-3. **New Configuration**: Update `config.py` dataclasses
-4. **New Database Table**: Modify `database_manager.py`
-
-### Code Style
-- Follow PEP 8 guidelines
-- Use type hints for all functions
-- Write comprehensive docstrings
-- Maintain test coverage above 80%
-
-## 🔒 Security Considerations
-
-### Data Protection
-- Biometric templates are stored as normalized embeddings (not raw images)
-- Database encryption at rest (configure in production)
-- Secure API key management
-- Rate limiting and DDoS protection
-
-### Privacy Compliance
-- GDPR compliant data handling
-- User consent mechanisms
-- Data retention policies
-- Right to erasure implementation
-
-### Production Deployment
-- Use HTTPS/TLS encryption
-- Implement proper authentication (JWT/OAuth)
-- Enable audit logging
-- Regular security updates
-
-## 🚀 Production Deployment
-
-### Docker Deployment
-```dockerfile
-# Dockerfile (create this file)
-FROM python:3.10-slim
-
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY . .
-EXPOSE 8000
-
-CMD ["python", "main.py", "--host", "0.0.0.0", "--port", "8000"]
-```
-
-```bash
-# Build and run
-docker build -t face-recognition-system .
-docker run -p 8000:8000 face-recognition-system
-```
-
-### Production Configuration
-```yaml
-# production_config.yaml
-environment: production
-api:
-  host: "0.0.0.0"
-  port: 8000
-  debug: false
-  workers: 4
-  api_key_required: true
-
-logging:
-  level: "INFO"
-  file_enabled: true
-  file_path: "/var/log/face_recognition.log"
-
-database:
-  backup_enabled: true
-  backup_interval_hours: 6
-  max_backups: 30
-```
-
-### Load Balancing
-```nginx
-# nginx.conf
-upstream face_recognition {
-    server 127.0.0.1:8000;
-    server 127.0.0.1:8001;
-    server 127.0.0.1:8002;
-}
-
-server {
-    listen 80;
-    location / {
-        proxy_pass http://face_recognition;
-    }
-}
-```
-
-## 📈 Performance Optimization
-
-### Model Optimization
-- Use quantized models for mobile deployment
-- GPU acceleration for batch processing
-- Model pruning for reduced memory usage
-- TensorRT optimization for NVIDIA GPUs
-
-### Database Optimization
-- FAISS index optimization for large datasets
-- SQLite WAL mode for better concurrency
-- Regular database maintenance and cleanup
-- Distributed storage for horizontal scaling
-
-### API Optimization
-- Implement caching for frequent requests
-- Use connection pooling
-- Enable compression
-- Implement request queuing for high load
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-#### 1. CUDA Out of Memory
-```bash
-# Solution: Use CPU or reduce batch size
-export FACE_RECOGNITION_DEVICE=cpu
-```
-
-#### 2. Webcam Not Detected
-```bash
-# Check camera permissions and drivers
-# Test with:
-python -c "import cv2; cap = cv2.VideoCapture(0); print('Camera works:', cap.isOpened())"
-```
-
-#### 3. Model Download Failures
-```bash
-# Manual model download
-python -c "from transformers import ViTModel; ViTModel.from_pretrained('google/vit-base-patch16-224')"
-```
-
-#### 4. Permission Errors
-```bash
-# Fix file permissions
-chmod +x main.py
-sudo chown -R $USER:$USER data/ models/ logs/
-```
-
-### Debug Mode
-```bash
-# Enable detailed logging
-python main.py --debug
-
-# Check system status
-curl http://localhost:8000/api/v1/health
-```
-
-## 📞 Support
-
-### Getting Help
-- **Documentation**: Check this README and API docs
-- **Issues**: Create GitHub issues for bugs
-- **Discussions**: Use GitHub Discussions for questions
-- **Email**: contact@example.com (replace with actual)
-
-### Contributing
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/new-feature`)
-3. Commit changes (`git commit -am 'Add new feature'`)
-4. Push branch (`git push origin feature/new-feature`)
-5. Create Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **FaceNet**: For face embedding architecture
-- **MTCNN**: For face detection
-- **Hugging Face**: For transformer models
-- **FAISS**: For efficient similarity search
-- **FastAPI**: For modern API framework
-
-## 📊 Changelog
-
-### v1.0.0 (2024-01-01)
-- Initial release
-- Core face recognition functionality
-- Anti-spoofing and deepfake detection
-- RESTful API with FastAPI
-- Comprehensive documentation
-
-### v1.1.0 (Planned)
-- Mobile app integration
-- Real-time video stream processing
-- Enhanced security features
-- Performance optimizations
+> **Important:** The current repository is an engineering prototype. The biometric/anti-spoofing ML components still require properly trained and evaluated model weights before this system should be considered suitable for high-security biometric authentication.
 
 ---
 
-**Built with ❤️ for secure and reliable face recognition**
+## ✨ Features
+
+### Face Processing
+
+- Face detection using OpenCV-based detection
+- Face extraction and preprocessing
+- Face quality validation
+- Blur/quality checks
+- Single-image processing without requiring a server-side webcam
+- Legacy webcam capture support for local use
+
+### Authentication Pipeline
+
+```text
+Image / Video Frame
+        │
+        ▼
+┌─────────────────────┐
+│   Face Detection    │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  Face Quality Check │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│ Face Preprocessing  │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│ Embedding Extraction│
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│   FAISS Matching    │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│ Authentication      │
+│ Decision Engine      │
+└──────────┬──────────┘
+           ▼
+      MFA / Result
+````
+
+Optional security stages can additionally include:
+
+```text
+Face
+ │
+ ├── Liveness Detection
+ │
+ └── Deepfake Detection
+```
+
+### Backend
+
+* FastAPI REST API
+* Modular service architecture
+* Environment-based configuration
+* Health-check endpoint
+* Structured logging
+* Error handling
+* API authentication controls
+* Rate limiting
+
+### Storage
+
+* SQLite for user and embedding metadata
+* FAISS for vector similarity search
+* Automatic FAISS consistency validation
+* Deterministic FAISS rebuild after deletion
+* Atomic FAISS persistence
+* Database and FAISS backup support
+* Configurable persistent storage paths
+
+### Security
+
+* Configurable face similarity thresholds
+* Overall authentication confidence threshold
+* Rate limiting
+* MFA / OTP support
+* Environment-based secrets
+* Configurable CORS
+* Audit logging
+* No secrets committed to source control
+
+### Deployment
+
+* Docker support
+* CPU-only production container
+* Headless OpenCV
+* Render deployment configuration
+* Render persistent disk support
+* Environment-based production configuration
+* Health checks
+* Production startup validation
+* Configurable memory-saving mode for constrained deployments
+
+---
+
+# 🏗️ Architecture
+
+```text
+                         Client
+                           │
+                           │ Image / Frame
+                           ▼
+                  ┌───────────────────┐
+                  │     FastAPI       │
+                  │      REST API     │
+                  └─────────┬─────────┘
+                            │
+              ┌─────────────┴─────────────┐
+              │                           │
+              ▼                           ▼
+      ┌───────────────┐          ┌────────────────┐
+      │ Face Processor│          │ Authentication │
+      │               │          │     Engine     │
+      └───────┬───────┘          └───────┬────────┘
+              │                          │
+              ▼                          ▼
+      ┌───────────────┐          ┌────────────────┐
+      │ Face Detection│          │   Liveness     │
+      │ & Quality     │          │   Detection    │
+      └───────┬───────┘          └───────┬────────┘
+              │                          │
+              ▼                          ▼
+      ┌───────────────┐          ┌────────────────┐
+      │  Embedding    │          │    Deepfake    │
+      │  Extraction   │          │    Detection   │
+      └───────┬───────┘          └───────┬────────┘
+              │                          │
+              └─────────────┬────────────┘
+                            ▼
+                  ┌───────────────────┐
+                  │ Authentication    │
+                  │ Decision Engine    │
+                  └─────────┬─────────┘
+                            │
+                            ▼
+                  ┌───────────────────┐
+                  │   SQLite + FAISS  │
+                  └─────────┬─────────┘
+                            │
+                            ▼
+                  ┌───────────────────┐
+                  │ MFA / API Result  │
+                  └───────────────────┘
+```
+
+---
+
+# 📁 Project Structure
+
+```text
+Face-Recognition-with-Anti-Spoofing/
+│
+├── config/
+│   └── config.yaml
+│
+├── data/
+│   ├── embeddings/
+│   ├── backups/
+│   └── face_recognition.db
+│
+├── logs/
+│
+├── models/
+│
+├── src/
+│   ├── api.py
+│   ├── authentication.py
+│   ├── config.py
+│   ├── database_manager.py
+│   ├── deepfake_detection.py
+│   ├── embedding_extraction.py
+│   ├── face_capture.py
+│   ├── face_processor.py
+│   ├── liveness_detection.py
+│   └── utils.py
+│
+├── tests/
+│   ├── test_api.py
+│   ├── test_authentication.py
+│   ├── test_database_manager.py
+│   └── test_face_capture.py
+│
+├── .env.example
+├── .gitignore
+├── Dockerfile
+├── main.py
+├── render.yaml
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# ⚙️ Technology Stack
+
+| Component         | Technology                   |
+| ----------------- | ---------------------------- |
+| Backend           | FastAPI                      |
+| Language          | Python                       |
+| Face Processing   | OpenCV                       |
+| Deep Learning     | PyTorch                      |
+| Embeddings        | MobileNetV2-based extractor  |
+| Vector Search     | FAISS                        |
+| Database          | SQLite                       |
+| Configuration     | YAML + Environment Variables |
+| Authentication    | API/JWT/MFA components       |
+| Containerization  | Docker                       |
+| Deployment        | Render                       |
+| Testing           | Pytest                       |
+| Production OpenCV | OpenCV Headless              |
+
+---
+
+# 🚀 Quick Start
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/Saptak20/Face-Recognition-with-Anti-Spoofing.git
+cd Face-Recognition-with-Anti-Spoofing
+```
+
+---
+
+## 2. Create a virtual environment
+
+Using Python `venv`:
+
+```bash
+python3 -m venv .venv
+```
+
+Activate it:
+
+### Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
+### Windows
+
+```powershell
+.venv\Scripts\activate
+```
+
+---
+
+## 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+For GPU development, install the appropriate PyTorch build separately according to your CUDA environment.
+
+---
+
+## 4. Configure environment variables
+
+Create a local `.env` file based on:
+
+```text
+.env.example
+```
+
+Never commit `.env`.
+
+Example:
+
+```bash
+export FACE_RECOGNITION_ENVIRONMENT=development
+export FACE_RECOGNITION_DEVICE=cpu
+export FACE_RECOGNITION_DB_PATH=data/face_recognition.db
+export FACE_RECOGNITION_FAISS_INDEX_PATH=data/embeddings/face_index.faiss
+```
+
+For production, secrets should be supplied through the deployment platform rather than committed to the repository.
+
+---
+
+# ▶️ Running Locally
+
+Start the API:
+
+```bash
+python main.py
+```
+
+The default API runs on:
+
+```text
+http://localhost:8000
+```
+
+API documentation:
+
+```text
+http://localhost:8000/docs
+```
+
+ReDoc:
+
+```text
+http://localhost:8000/redoc
+```
+
+Health check:
+
+```text
+http://localhost:8000/api/v1/health
+```
+
+---
+
+# 🔌 API Endpoints
+
+## Health Check
+
+```http
+GET /api/v1/health
+```
+
+Returns the current health status of the application and its components.
+
+---
+
+## Register Using an Image Frame
+
+```http
+POST /api/v1/register-frame
+```
+
+Multipart form data:
+
+```text
+user_id
+name
+email
+phone
+min_quality_score
+file
+```
+
+Example:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/register-frame \
+  -F "user_id=test_user_001" \
+  -F "name=Test User" \
+  -F "email=test@example.com" \
+  -F "phone=1234567890" \
+  -F "min_quality_score=0.7" \
+  -F "file=@face.jpg"
+```
+
+---
+
+## Authenticate Using an Image Frame
+
+```http
+POST /api/v1/authenticate-frame
+```
+
+Example:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/authenticate-frame \
+  -F "file=@face.jpg"
+```
+
+This endpoint is designed around **client-side frame/image capture**, avoiding the architectural problem of trying to access a user's webcam from the cloud server.
+
+---
+
+## Legacy Webcam Endpoints
+
+The project retains webcam-based functionality for local environments.
+
+These endpoints require the machine running the server to have access to a webcam.
+
+For cloud deployment, use the frame-upload endpoints instead.
+
+---
+
+# 🧠 Face Processing
+
+The image-processing pipeline is separated from webcam capture.
+
+```text
+Client Frame
+     │
+     ▼
+FaceProcessor
+     │
+     ├── Detect Face
+     ├── Extract Face
+     ├── Preprocess
+     ├── Validate Quality
+     └── Return Processed Result
+```
+
+This separation allows the same processing pipeline to work with:
+
+* Webcam frames
+* Uploaded images
+* Browser camera frames
+* API clients
+* Automated tests
+
+---
+
+# 🗄️ SQLite + FAISS
+
+The system uses two complementary storage layers.
+
+### SQLite
+
+Stores structured information such as:
+
+* Users
+* User metadata
+* Embedding metadata
+* FAISS vector identifiers
+* Authentication-related information
+
+### FAISS
+
+Stores vectors for efficient similarity search.
+
+```text
+User
+ │
+ ├── Metadata ───────────────► SQLite
+ │
+ └── Face Embedding ────────► FAISS
+```
+
+The system maintains synchronization between SQLite and FAISS.
+
+### FAISS consistency
+
+When a user is deleted:
+
+```text
+Delete SQLite records
+        │
+        ▼
+Rebuild FAISS index
+        │
+        ▼
+Remap FAISS IDs
+        │
+        ▼
+Persist atomically
+```
+
+This prevents stale vectors from remaining searchable after user deletion.
+
+---
+
+# 💾 Persistent Storage
+
+Storage paths are configurable through environment variables.
+
+```bash
+FACE_RECOGNITION_DB_PATH
+FACE_RECOGNITION_FAISS_INDEX_PATH
+FACE_RECOGNITION_BACKUP_PATH
+```
+
+Example production configuration:
+
+```text
+/var/data/face_recognition.db
+/var/data/embeddings/face_index.faiss
+/var/data/backups/
+```
+
+This allows SQLite and FAISS data to survive container restarts when used with persistent storage.
+
+---
+
+# 🔐 Configuration
+
+Configuration is managed through YAML and environment variables.
+
+Important configuration categories include:
+
+```text
+System
+Models
+Database
+Authentication
+API
+Logging
+```
+
+Environment variables take precedence where configured.
+
+Example:
+
+```bash
+FACE_RECOGNITION_DEVICE=cpu
+FACE_RECOGNITION_DB_PATH=data/face_recognition.db
+FACE_RECOGNITION_FAISS_INDEX_PATH=data/embeddings/face_index.faiss
+FACE_RECOGNITION_OVERALL_CONFIDENCE_THRESHOLD=0.6
+FACE_RECOGNITION_API_KEY_REQUIRED=true
+FACE_RECOGNITION_ALLOWED_ORIGINS=http://localhost:3000
+```
+
+---
+
+# 🛡️ Memory-Constrained Deployment
+
+The optional liveness and deepfake models can require significant memory.
+
+For constrained deployment environments, the application supports:
+
+```bash
+FACE_RECOGNITION_SKIP_OPTIONAL_MODELS=true
+```
+
+When enabled, optional model initialization is skipped so that the core face-processing and authentication infrastructure can operate within constrained memory environments.
+
+This mode should **not** be interpreted as providing full anti-spoofing protection.
+
+---
+
+# 🐳 Docker
+
+Build the production image:
+
+```bash
+docker build -t face-recognition-with-anti-spoofing .
+```
+
+Run locally:
+
+```bash
+docker run -p 8000:8000 \
+  face-recognition-with-anti-spoofing
+```
+
+The production container uses:
+
+* Python 3.12
+* CPU-only PyTorch
+* Headless OpenCV
+* FAISS CPU
+* FastAPI
+* Environment-driven configuration
+
+The container respects the platform-provided `PORT` environment variable.
+
+---
+
+# ☁️ Render Deployment
+
+The repository includes:
+
+```text
+render.yaml
+```
+
+The deployment configuration provides:
+
+* Docker-based deployment
+* Persistent disk configuration
+* Health checks
+* Production environment configuration
+* Environment-variable based secrets
+* Persistent SQLite storage
+* Persistent FAISS storage
+
+Health check:
+
+```text
+GET /api/v1/health
+```
+
+Production secrets should be configured through Render environment variables.
+
+Never commit production credentials to GitHub.
+
+---
+
+# 🧪 Testing
+
+The project currently has a comprehensive automated test suite.
+
+Run:
+
+```bash
+pytest -q
+```
+
+Current verified result:
+
+```text
+89 passed, 1 warning
+```
+
+The test suite covers:
+
+* API endpoints
+* Authentication
+* Face capture
+* Face processing
+* SQLite operations
+* FAISS operations
+* FAISS deletion/rebuild behavior
+* FAISS ID remapping
+* Backup integrity
+* Consistency validation
+* API error handling
+* Persistence behavior
+
+---
+
+# 🧪 API Testing
+
+Interactive API documentation:
+
+```text
+http://localhost:8000/docs
+```
+
+Health check:
+
+```bash
+curl http://localhost:8000/api/v1/health
+```
+
+Example image authentication:
+
+```bash
+curl -X POST \
+  http://localhost:8000/api/v1/authenticate-frame \
+  -F "file=@face.jpg"
+```
+
+---
+
+# 🔒 Security Architecture
+
+The system includes several defensive layers:
+
+```text
+                Authentication Request
+                         │
+                         ▼
+                Face Quality Check
+                         │
+                         ▼
+                 Liveness Check
+                         │
+                         ▼
+                Deepfake Check
+                         │
+                         ▼
+                Face Similarity
+                         │
+                         ▼
+              Overall Confidence
+                         │
+                         ▼
+                    Rate Limit
+                         │
+                         ▼
+                       MFA
+                         │
+                         ▼
+                  Authentication
+```
+
+Additional controls include:
+
+* Rate limiting
+* Configurable thresholds
+* API key support
+* JWT-related configuration
+* MFA support
+* Audit logging
+* Environment-based secret management
+* Persistent storage controls
+
+---
+
+# ⚠️ Current ML Limitations
+
+The current engineering implementation should **not be represented as a production-grade biometric security system yet**.
+
+The following areas still require proper model training, evaluation, and calibration:
+
+### Face Embeddings
+
+The current embedding pipeline uses a MobileNetV2 backbone with a project-specific projection layer.
+
+The projection layer is not a production identity-recognition model trained specifically for face verification.
+
+### Liveness Detection
+
+The liveness detector currently requires properly trained anti-spoofing weights.
+
+Without trained weights, its output cannot be treated as reliable anti-spoofing evidence.
+
+### Deepfake Detection
+
+The deepfake detector uses a transformer-based architecture, but the classification component requires properly trained/fine-tuned weights before it can be relied upon for security decisions.
+
+### Face Detection
+
+The system can fall back to OpenCV Haar-based detection when the preferred detector assets are unavailable.
+
+---
+
+# 🧭 Development Tracks
+
+The project is being developed in two distinct tracks.
+
+## Track A — Engineering & Deployment
+
+Completed / implemented:
+
+* Modular face processing
+* Frame-based API
+* Webcam/server separation
+* SQLite + FAISS integration
+* FAISS consistency handling
+* Atomic persistence
+* Backup verification
+* API error handling
+* Automated testing
+* Dockerization
+* CPU deployment configuration
+* Environment-based secrets
+* Render deployment configuration
+* Persistent storage configuration
+* Production health checks
+
+## Track B — ML Security
+
+Planned / ongoing:
+
+* Production-grade face embeddings
+* Proper anti-spoofing model
+* Proper deepfake detection model
+* Model evaluation
+* Threshold calibration
+* False acceptance / false rejection analysis
+* Model versioning
+* Security benchmarking
+
+---
+
+# 📈 Future Improvements
+
+* Replace the current embedding extractor with a face-recognition model trained for identity verification
+* Integrate a properly trained anti-spoofing model
+* Integrate a properly trained deepfake detector
+* Add model evaluation and calibration pipelines
+* Add ROC/DET evaluation
+* Add FAR/FRR measurements
+* Add model version management
+* Improve face detection with bundled production weights
+* Add frontend camera capture application
+* Add WebSocket-based real-time verification
+* Add stronger persistent database infrastructure for larger deployments
+* Add comprehensive observability
+* Add CI/CD pipeline
+* Add automated deployment verification
+* Add security and load testing
+
+---
+
+# 📊 Engineering Milestones
+
+```text
+Core Application Repair              ✅
+Frame-Based Processing               ✅
+Webcam/API Separation                ✅
+SQLite + FAISS Integration           ✅
+FAISS Consistency & Rebuild          ✅
+Atomic Persistence                   ✅
+API Error Handling                   ✅
+Automated Test Suite                 ✅
+Dockerization                        ✅
+CPU Production Runtime               ✅
+Environment-Based Secrets             ✅
+Render Configuration                 ✅
+Persistent Storage Configuration      ✅
+Production Health Checks             ✅
+
+Production ML Embeddings             ⏳
+Real Anti-Spoofing Model              ⏳
+Real Deepfake Detection               ⏳
+Model Calibration                     ⏳
+Security Benchmarking                 ⏳
+```
+
+---
+
+# 🤝 Development
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Saptak20/Face-Recognition-with-Anti-Spoofing.git
+cd Face-Recognition-with-Anti-Spoofing
+```
+
+Create a branch:
+
+```bash
+git checkout -b feature/your-feature
+```
+
+Make your changes and run:
+
+```bash
+pytest -q
+```
+
+Commit:
+
+```bash
+git add .
+git commit -m "feat: describe your change"
+```
+
+Push:
+
+```bash
+git push origin feature/your-feature
+```
+
+---
+
+# 📄 License
+
+This project is intended for educational, research, and engineering purposes.
+
+See the repository license file for the applicable licensing terms.
+
+---
+
+# 👨‍💻 Author
+
+**Saptak Mondal**
+
+Computer Science Engineering
+AIML & IoT
+
+GitHub:
+
+[https://github.com/Saptak20](https://github.com/Saptak20)
+
+---
+
+# ⭐ Project
+
+**Face Recognition with Anti-Spoofing**
+
+An end-to-end exploration of:
+
+```text
+Computer Vision
+      +
+Deep Learning
+      +
+Face Recognition
+      +
+Anti-Spoofing
+      +
+FastAPI
+      +
+FAISS
+      +
+SQLite
+      +
+Docker
+      +
+Cloud Deployment
+```
+
+Built to explore how a computer-vision authentication system can move from a local prototype toward a reliable, testable, deployable backend architecture.
+
+```
+
+### One important thing
+
+I intentionally removed/rewrote several claims from the old README that no longer match the actual state. For example, the old README describes **MTCNN + FaceNet** and calls the system production-ready; the current implementation and our audit don't support those claims. :contentReference[oaicite:2]{index=2} :contentReference[oaicite:3]{index=3}
+
+This version is much stronger for GitHub because it shows the **actual engineering work you've done**—especially the frame-based architecture, FAISS consistency, Docker, testing, persistence, and deployment work—without pretending the ML security models are finished.
+```
