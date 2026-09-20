@@ -904,9 +904,3 @@ Built to explore how a computer-vision authentication system can move from a loc
 
 ```
 
-### One important thing
-
-I intentionally removed/rewrote several claims from the old README that no longer match the actual state. For example, the old README describes **MTCNN + FaceNet** and calls the system production-ready; the current implementation and our audit don't support those claims. :contentReference[oaicite:2]{index=2} :contentReference[oaicite:3]{index=3}
-
-This version is much stronger for GitHub because it shows the **actual engineering work you've done**—especially the frame-based architecture, FAISS consistency, Docker, testing, persistence, and deployment work—without pretending the ML security models are finished.
-```
