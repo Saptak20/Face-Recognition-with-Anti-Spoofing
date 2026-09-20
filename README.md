@@ -1,4 +1,3 @@
-````markdown
 # Face Recognition with Anti-Spoofing
 
 A modular **FastAPI-based face recognition and authentication system** that combines face detection, image quality validation, embedding extraction, similarity matching, liveness detection, deepfake detection, MFA, SQLite, and FAISS.
