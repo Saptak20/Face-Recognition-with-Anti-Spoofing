@@ -1,9 +1,3 @@
-# **Face Recognition with Anti-Spoofing**
-
-And I deliberately **did not call it production-grade biometric security**, because our current ML audit showed that the embedding projection head, liveness model, and deepfake classifier still need properly trained weights.
-
-Here is the updated README, ready to copy-paste directly into `README.md`:
-
 ````markdown
 # Face Recognition with Anti-Spoofing
 
