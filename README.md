@@ -901,6 +901,3 @@ Cloud Deployment
 ```
 
 Built to explore how a computer-vision authentication system can move from a local prototype toward a reliable, testable, deployable backend architecture.
-
-```
-
