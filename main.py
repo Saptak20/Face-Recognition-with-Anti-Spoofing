@@ -205,7 +205,10 @@ class FaceRecognitionSystem:
                 db_path=self.config.database.sqlite_db_path,
                 faiss_index_path=self.config.database.faiss_index_path,
                 embedding_dim=self.config.models.embedding_dim,
-                index_type=self.config.database.faiss_index_type
+                embedding_model=self.config.models.embedding_model,
+                index_type=self.config.database.faiss_index_type,
+                backup_dir=self.config.database.backup_path,
+                auto_reconcile=True
             )
             
             # Get initial statistics

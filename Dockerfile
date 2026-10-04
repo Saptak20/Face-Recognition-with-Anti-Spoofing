@@ -39,11 +39,7 @@ RUN mkdir -p /app/data/embeddings /app/data/backups /app/logs /app/models
 # Expose the default port (Render will override via PORT env var)
 EXPOSE 8000
 
-# Health check using the API health endpoint
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=30s \
-    CMD python -c "import urllib.request; import os; \
-    port = os.environ.get('PORT', '8000'); \
-    urllib.request.urlopen(f'http://127.0.0.1:{port}/api/v1/health', timeout=5)" || exit 1
-
 # Start the application - use shell to expand PORT env var
+# Note: Health check is handled externally by Render via healthCheckPath: /api/v1/health in render.yaml
+# to prevent periodic Python interpreter fork/exec overhead in memory-constrained environments.
 CMD python main.py --host 0.0.0.0 --port ${PORT:-8000}

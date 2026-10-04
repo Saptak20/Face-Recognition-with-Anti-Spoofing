@@ -637,3 +637,195 @@ class TestDatabaseIntegrationWorkflow:
 
         assert int_db.index.ntotal == 0
         assert int_db._validate_faiss_index() is True
+
+
+class TestDatabaseStartupReconciliation:
+    """Tests for startup consistency validation and safe reconciliation (Finding 1)."""
+
+    def test_startup_reconciliation_empty_sqlite_non_empty_faiss(self, tmp_path):
+        """
+        When SQLite has 0 records but FAISS has orphan vectors:
+        - Must detect inconsistency.
+        - Must create verified backup of FAISS index before destructive reset.
+        - Must NOT invent identities for orphan vectors.
+        - Must reset active FAISS index to 0 vectors to match authoritative SQLite state.
+        - Must validate successfully after reconciliation.
+        """
+        db_path = tmp_path / "test.db"
+        faiss_path = tmp_path / "embeddings" / "face_index.faiss"
+        backup_dir = tmp_path / "backups"
+        faiss_path.parent.mkdir(parents=True, exist_ok=True)
+        backup_dir.mkdir(parents=True, exist_ok=True)
+
+        # 1. Create a pre-existing FAISS index with 3 orphan vectors
+        orphan_vectors = np.random.randn(3, 512).astype(np.float32)
+        orphan_vectors /= np.linalg.norm(orphan_vectors, axis=1, keepdims=True)
+        if FAISS_AVAILABLE:
+            orphan_index = faiss.IndexFlatIP(512)
+            orphan_index.add(orphan_vectors)
+            faiss.write_index(orphan_index, str(faiss_path))
+        else:
+            orphan_index = FallbackIndex(512)
+            for v in orphan_vectors:
+                orphan_index.add(v)
+            with open(faiss_path, 'wb') as f:
+                pickle.dump(orphan_index, f)
+
+        # 2. Initialize DatabaseManager with empty SQLite and orphan FAISS
+        manager = DatabaseManager(
+            db_path=str(db_path),
+            faiss_index_path=str(faiss_path),
+            embedding_dim=512,
+            backup_dir=str(backup_dir),
+            auto_reconcile=True
+        )
+
+        try:
+            # 3. Verify active index is reset to 0 vectors to match SQLite
+            assert manager.index.ntotal == 0
+
+            # 4. Verify SQLite has 0 users and 0 embeddings (no hallucinated identities)
+            with manager._get_db_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT COUNT(*) as c FROM users")
+                assert cursor.fetchone()['c'] == 0
+                cursor.execute("SELECT COUNT(*) as c FROM embeddings")
+                assert cursor.fetchone()['c'] == 0
+
+            # 5. Verify backup was created and contains the orphan vectors
+            backup_files = list(backup_dir.glob("face_index_orphan_or_inconsistent_*.faiss"))
+            assert len(backup_files) >= 1
+            backup_file = backup_files[0]
+            assert backup_file.exists()
+            assert backup_file.stat().st_size > 0
+
+            # Verify backup loads and has the 3 orphan vectors
+            if FAISS_AVAILABLE:
+                loaded_backup = faiss.read_index(str(backup_file))
+                assert loaded_backup.ntotal == 3
+            else:
+                with open(backup_file, 'rb') as f:
+                    loaded_backup = pickle.load(f)
+                assert loaded_backup.ntotal == 3
+
+            # 6. Verify manager is valid post-reconciliation
+            assert manager._validate_faiss_index() is True
+        finally:
+            manager.close()
+
+    def test_startup_reconciliation_sqlite_authoritative_rebuild(self, tmp_path):
+        """
+        When SQLite has authoritative embeddings but FAISS index is out of sync or missing:
+        - Rebuilds FAISS index from SQLite embeddings.
+        - Remaps faiss_id sequentially in SQLite.
+        - Backs up any existing inconsistent index first.
+        - Verifies post-reconciliation validity and search functionality.
+        """
+        db_path = tmp_path / "test.db"
+        faiss_path = tmp_path / "embeddings" / "face_index.faiss"
+        backup_dir = tmp_path / "backups"
+
+        # 1. Initialize DB and add users + embeddings normally without auto_reconcile
+        manager1 = DatabaseManager(
+            db_path=str(db_path),
+            faiss_index_path=str(faiss_path),
+            embedding_dim=512,
+            backup_dir=str(backup_dir),
+            auto_reconcile=False
+        )
+
+        user_vecs = {}
+        for uid in ['user_a', 'user_b', 'user_c']:
+            manager1.add_user(uid, f"Name {uid}")
+            vec = np.random.randn(512).astype(np.float32)
+            vec /= np.linalg.norm(vec)
+            user_vecs[uid] = vec
+            manager1.add_embedding(uid, vec, quality_score=0.9)
+
+        assert manager1.index.ntotal == 3
+        manager1.close()
+
+        # 2. Corrupt FAISS index by writing an out-of-sync 1-vector index
+        corrupted_vec = np.random.randn(1, 512).astype(np.float32)
+        if FAISS_AVAILABLE:
+            bad_index = faiss.IndexFlatIP(512)
+            bad_index.add(corrupted_vec)
+            faiss.write_index(bad_index, str(faiss_path))
+        else:
+            bad_index = FallbackIndex(512)
+            bad_index.add(corrupted_vec[0])
+            with open(faiss_path, 'wb') as f:
+                pickle.dump(bad_index, f)
+
+        # 3. Start DatabaseManager with auto_reconcile=True
+        manager2 = DatabaseManager(
+            db_path=str(db_path),
+            faiss_index_path=str(faiss_path),
+            embedding_dim=512,
+            backup_dir=str(backup_dir),
+            auto_reconcile=True
+        )
+
+        try:
+            # 4. Active index must have rebuilt to 3 vectors matching SQLite
+            assert manager2.index.ntotal == 3
+            assert manager2._validate_faiss_index() is True
+
+            # Verify backup of inconsistent 1-vector index was created
+            backup_files = list(backup_dir.glob("face_index_orphan_or_inconsistent_*.faiss"))
+            assert len(backup_files) >= 1
+
+            # 5. Verify faiss_id in SQLite are sequential [0, 1, 2]
+            with manager2._get_db_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT faiss_id FROM embeddings ORDER BY faiss_id")
+                faiss_ids = [row['faiss_id'] for row in cursor.fetchall()]
+                assert faiss_ids == [0, 1, 2]
+
+            # 6. Verify users authenticate correctly against rebuilt index
+            for uid, vec in user_vecs.items():
+                auth = manager2.authenticate_user(vec, threshold=0.9)
+                assert auth is not None
+                assert auth['user_id'] == uid
+        finally:
+            manager2.close()
+
+    def test_startup_reconciliation_fails_clearly_on_corrupt_sqlite(self, tmp_path):
+        """
+        If SQLite embeddings contain unreadable/corrupted data during rebuild:
+        - Must raise Exception/RuntimeError.
+        - Must NOT silently succeed or accept corrupted state.
+        - Verified backup of existing index must be preserved.
+        """
+        db_path = tmp_path / "test.db"
+        faiss_path = tmp_path / "embeddings" / "face_index.faiss"
+        backup_dir = tmp_path / "backups"
+
+        # Create valid manager, add user and a corrupted embedding blob
+        manager = DatabaseManager(
+            db_path=str(db_path),
+            faiss_index_path=str(faiss_path),
+            embedding_dim=512,
+            backup_dir=str(backup_dir),
+            auto_reconcile=False
+        )
+        manager.add_user("corrupt_user", "Corrupt User")
+        with manager._get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO embeddings (user_id, embedding_id, faiss_id, embedding_vector, quality_score) "
+                "VALUES (?, ?, ?, ?, ?)",
+                ("corrupt_user", "corrupt-emb-id", 0, b"not_a_valid_pickle_blob", 0.9)
+            )
+            conn.commit()
+        manager.close()
+
+        # Startup with auto_reconcile=True should fail clearly
+        with pytest.raises(Exception):
+            DatabaseManager(
+                db_path=str(db_path),
+                faiss_index_path=str(faiss_path),
+                embedding_dim=512,
+                backup_dir=str(backup_dir),
+                auto_reconcile=True
+            )
