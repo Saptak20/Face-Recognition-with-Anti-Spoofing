@@ -21,6 +21,7 @@ from PIL import Image
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from src.api import FaceRecognitionAPI
+from src.face_capture import FaceCapture
 
 
 class ASGIResponse:
@@ -135,8 +136,11 @@ def create_test_image_bytes(color='blue', size=(160, 160)) -> bytes:
 @pytest.fixture
 def mock_components():
     """Create mock components for testing."""
+    mock_fc = Mock()
+    mock_fc.detect_faces.return_value = [{'bbox': np.array([10, 10, 100, 100]), 'confidence': 0.95}]
+    mock_fc.extract_face.return_value = np.zeros((160, 160, 3), dtype=np.uint8)
     return {
-        'face_capture': Mock(),
+        'face_capture': mock_fc,
         'embedding_extractor': Mock(),
         'liveness_detector': Mock(),
         'deepfake_detector': Mock(),
@@ -201,6 +205,74 @@ class TestRootAndHealthEndpoints:
         data = response.json()
         assert data["status"] == "unhealthy"
         assert not all(data["components"].values())
+
+    def test_health_check_optional_models_skipped(self):
+        """Health check reports liveness/deepfake as false when models are skipped (None)."""
+        api = FaceRecognitionAPI({
+            'allowed_origins': ['*'],
+            'api_key_required': False
+        })
+        
+        mock_fc = Mock()
+        mock_fc.detect_faces.return_value = [{'bbox': [10, 10, 100, 100], 'confidence': 0.95}]
+        mock_fc.extract_face.return_value = [[[0]*3]*160]*160
+        
+        api.set_components(
+            face_capture=mock_fc,
+            embedding_extractor=Mock(),
+            liveness_detector=None,  # Skipped
+            deepfake_detector=None,  # Skipped
+            database_manager=Mock(),
+            auth_engine=Mock()
+        )
+        
+        uninit_client = ASGIClient(api.app)
+        response = uninit_client.get("/api/v1/health")
+        assert response.status_code == 200
+        data = response.json()
+        
+        # Core components should be healthy
+        assert data["components"]["face_capture"] is True
+        assert data["components"]["embedding_extractor"] is True
+        assert data["components"]["database_manager"] is True
+        assert data["components"]["auth_engine"] is True
+        
+        # Optional models should report as unavailable (false), not healthy
+        assert data["components"]["liveness_detector"] is False
+        assert data["components"]["deepfake_detector"] is False
+        
+        # Overall status should still be healthy (only core components required)
+        assert data["status"] == "healthy"
+
+    def test_health_check_optional_models_loaded(self):
+        """Health check reports liveness/deepfake as true when models are loaded."""
+        api = FaceRecognitionAPI({
+            'allowed_origins': ['*'],
+            'api_key_required': False
+        })
+        
+        mock_fc = Mock()
+        mock_fc.detect_faces.return_value = [{'bbox': [10, 10, 100, 100], 'confidence': 0.95}]
+        mock_fc.extract_face.return_value = [[[0]*3]*160]*160
+        
+        api.set_components(
+            face_capture=mock_fc,
+            embedding_extractor=Mock(),
+            liveness_detector=Mock(),  # Loaded
+            deepfake_detector=Mock(),  # Loaded
+            database_manager=Mock(),
+            auth_engine=Mock()
+        )
+        
+        uninit_client = ASGIClient(api.app)
+        response = uninit_client.get("/api/v1/health")
+        assert response.status_code == 200
+        data = response.json()
+        
+        # All components should be healthy
+        assert data["components"]["liveness_detector"] is True
+        assert data["components"]["deepfake_detector"] is True
+        assert data["status"] == "healthy"
 
 
 class TestUserRegistrationEndpoints:
@@ -330,6 +402,77 @@ class TestUserRegistrationEndpoints:
         assert response.status_code == 400
         assert "Invalid image file" in response.json()["detail"]
 
+    def test_register_frame_zero_faces_rejected(self, client, mock_components):
+        """Test registration frame upload rejects images with 0 detected faces (HTTP 400)."""
+        mock_components['face_capture'].detect_faces.return_value = []
+        image_bytes = create_test_image_bytes(color='black')
+
+        response = client.post(
+            "/api/v1/register-frame",
+            data={
+                "user_id": "no_face_user",
+                "name": "No Face User"
+            },
+            files={
+                "file": ("empty.jpg", image_bytes, "image/jpeg")
+            }
+        )
+        assert response.status_code == 400
+        data = response.json()
+        assert "No face detected in uploaded image" in data["detail"]
+        mock_components['auth_engine'].register_user.assert_not_called()
+
+    def test_register_frame_multiple_faces_rejected(self, client, mock_components):
+        """Test registration frame upload rejects images with multiple detected faces (HTTP 400)."""
+        mock_components['face_capture'].detect_faces.return_value = [
+            {'bbox': np.array([10, 10, 50, 50]), 'confidence': 0.95},
+            {'bbox': np.array([60, 60, 100, 100]), 'confidence': 0.92}
+        ]
+        image_bytes = create_test_image_bytes(color='gray')
+
+        response = client.post(
+            "/api/v1/register-frame",
+            data={
+                "user_id": "multi_face_user",
+                "name": "Multi Face User"
+            },
+            files={
+                "file": ("crowd.jpg", image_bytes, "image/jpeg")
+            }
+        )
+        assert response.status_code == 400
+        data = response.json()
+        assert "Multiple faces detected" in data["detail"]
+        mock_components['auth_engine'].register_user.assert_not_called()
+
+    def test_register_frame_crops_and_passes_only_face(self, client, mock_components):
+        """Test registration passes cropped face (not raw uncropped frame) to auth_engine."""
+        mock_components['auth_engine'].register_user.return_value = {
+            'success': True,
+            'message': 'User registered successfully',
+            'user_id': 'crop_test_user',
+            'embedding_id': 'emb-crop-123'
+        }
+        mock_cropped_face = np.full((160, 160, 3), fill_value=42, dtype=np.uint8)
+        mock_components['face_capture'].extract_face.return_value = mock_cropped_face
+
+        image_bytes = create_test_image_bytes(color='purple')
+        response = client.post(
+            "/api/v1/register-frame",
+            data={
+                "user_id": "crop_test_user",
+                "name": "Crop User"
+            },
+            files={
+                "file": ("portrait.jpg", image_bytes, "image/jpeg")
+            }
+        )
+        assert response.status_code == 200
+        call_kwargs = mock_components['auth_engine'].register_user.call_args[1]
+        assert 'frames' in call_kwargs
+        assert len(call_kwargs['frames']) == 1
+        assert np.array_equal(call_kwargs['frames'][0], mock_cropped_face)
+
 
 class TestUserAuthenticationEndpoints:
     """Tests for authentication endpoints (webcam and frame upload)."""
@@ -450,6 +593,83 @@ class TestUserAuthenticationEndpoints:
         data = response.json()
         assert "detail" in data
         assert "Invalid image file" in data["detail"]
+
+    def test_authenticate_frame_zero_faces_rejected(self, client, mock_components):
+        """Test authentication frame upload rejects images with 0 detected faces (HTTP 400)."""
+        mock_components['face_capture'].detect_faces.return_value = []
+        image_bytes = create_test_image_bytes(color='black')
+
+        response = client.post(
+            "/api/v1/authenticate-frame",
+            files={
+                "file": ("empty.jpg", image_bytes, "image/jpeg")
+            }
+        )
+        assert response.status_code == 400
+        data = response.json()
+        assert "No face detected in uploaded image" in data["detail"]
+        mock_components['auth_engine'].authenticate_user.assert_not_called()
+
+    def test_authenticate_frame_multiple_faces_rejected(self, client, mock_components):
+        """Test authentication frame upload rejects images with multiple detected faces (HTTP 400)."""
+        mock_components['face_capture'].detect_faces.return_value = [
+            {'bbox': np.array([10, 10, 50, 50]), 'confidence': 0.95},
+            {'bbox': np.array([60, 60, 100, 100]), 'confidence': 0.92}
+        ]
+        image_bytes = create_test_image_bytes(color='gray')
+
+        response = client.post(
+            "/api/v1/authenticate-frame",
+            files={
+                "file": ("crowd.jpg", image_bytes, "image/jpeg")
+            }
+        )
+        assert response.status_code == 400
+        data = response.json()
+        assert "Multiple faces detected" in data["detail"]
+        mock_components['auth_engine'].authenticate_user.assert_not_called()
+
+    def test_authenticate_frame_crops_and_passes_only_face(self, client, mock_components):
+        """Test authentication passes cropped face (not raw uncropped frame) to auth_engine."""
+        mock_components['auth_engine'].authenticate_user.return_value = {
+            'success': True,
+            'message': 'Authentication successful',
+            'user_id': 'auth_crop_user',
+            'confidence': 0.92
+        }
+        mock_cropped_face = np.full((160, 160, 3), fill_value=99, dtype=np.uint8)
+        mock_components['face_capture'].extract_face.return_value = mock_cropped_face
+
+        image_bytes = create_test_image_bytes(color='yellow')
+        response = client.post(
+            "/api/v1/authenticate-frame",
+            files={
+                "file": ("portrait.jpg", image_bytes, "image/jpeg")
+            }
+        )
+        assert response.status_code == 200
+        call_kwargs = mock_components['auth_engine'].authenticate_user.call_args[1]
+        assert 'frame' in call_kwargs
+        assert np.array_equal(call_kwargs['frame'], mock_cropped_face)
+
+    def test_non_face_solid_image_rejected_at_detection_stage(self, api_instance, client, mock_components):
+        """Test non-face image (solid color) is rejected at detection stage with real FaceCapture."""
+        real_face_capture = FaceCapture(device='cpu')
+        api_instance.face_capture = real_face_capture
+        mock_components['auth_engine'].authenticate_user.reset_mock()
+
+        # Solid green image has no face features
+        solid_image_bytes = create_test_image_bytes(color='green', size=(200, 200))
+        response = client.post(
+            "/api/v1/authenticate-frame",
+            files={
+                "file": ("solid.jpg", solid_image_bytes, "image/jpeg")
+            }
+        )
+        assert response.status_code == 400
+        data = response.json()
+        assert "No face detected in uploaded image" in data["detail"]
+        mock_components['auth_engine'].authenticate_user.assert_not_called()
 
 
 class TestMFAVerificationEndpoint:

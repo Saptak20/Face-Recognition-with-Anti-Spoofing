@@ -190,17 +190,9 @@ class FaceRecognitionAPI:
                     "auth_engine": self.auth_engine is not None
                 }
                 
-                # Optional components - healthy if skipped (None) or loaded (not None)
-                optional_components = {
-                    "liveness_detector": self.liveness_detector is not None or True,  # skipped is ok
-                    "deepfake_detector": self.deepfake_detector is not None or True   # skipped is ok
-                }
-                
-                # Actually, check if they were intentionally skipped (None) vs failed to load
-                # If None, they were skipped intentionally - consider healthy
-                # If not None, they should be truthy (an instance)
-                liveness_healthy = self.liveness_detector is None or self.liveness_detector is not None
-                deepfake_healthy = self.deepfake_detector is None or self.deepfake_detector is not None
+                # Optional components - report actual state: True if loaded, False if failed, "skipped" if intentionally disabled
+                liveness_healthy = self.liveness_detector is not None
+                deepfake_healthy = self.deepfake_detector is not None
                 
                 components_status = {
                     **core_components,
@@ -367,14 +359,33 @@ class FaceRecognitionAPI:
                 except Exception as e:
                     raise HTTPException(status_code=400, detail=f"Invalid image file: {str(e)}")
 
-                # Call authentication engine for registration with provided frame
+                # Detect and extract face from the uploaded frame
+                face_capture = self.face_capture or (self.auth_engine.face_capture if self.auth_engine else None)
+                if not face_capture:
+                    raise HTTPException(status_code=500, detail="Face capture system not initialized")
+
+                faces = face_capture.detect_faces(image_bgr)
+                if not faces or len(faces) == 0:
+                    raise HTTPException(status_code=400, detail="No face detected in uploaded image")
+
+                if len(faces) > 1:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Multiple faces detected (found {len(faces)}). Please provide an image with a single face."
+                    )
+
+                cropped_face = face_capture.extract_face(image_bgr, faces[0]['bbox'])
+                if cropped_face is None:
+                    raise HTTPException(status_code=400, detail="Failed to extract detected face from image")
+
+                # Call authentication engine for registration with extracted cropped face
                 result = self.auth_engine.register_user(
                     user_id=user_id,
                     name=name,
                     email=email,
                     phone=phone,
                     min_quality_score=min_quality_score,
-                    frames=[image_bgr]
+                    frames=[cropped_face]
                 )
 
                 if result['success']:
@@ -431,9 +442,28 @@ class FaceRecognitionAPI:
                 except Exception as e:
                     raise HTTPException(status_code=400, detail=f"Invalid image file: {str(e)}")
 
-                # Call authentication engine with provided frame
+                # Detect and extract face from the uploaded frame
+                face_capture = self.face_capture or (self.auth_engine.face_capture if self.auth_engine else None)
+                if not face_capture:
+                    raise HTTPException(status_code=500, detail="Face capture system not initialized")
+
+                faces = face_capture.detect_faces(image_bgr)
+                if not faces or len(faces) == 0:
+                    raise HTTPException(status_code=400, detail="No face detected in uploaded image")
+
+                if len(faces) > 1:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Multiple faces detected (found {len(faces)}). Please provide an image with a single face."
+                    )
+
+                cropped_face = face_capture.extract_face(image_bgr, faces[0]['bbox'])
+                if cropped_face is None:
+                    raise HTTPException(status_code=400, detail="Failed to extract detected face from image")
+
+                # Call authentication engine with extracted cropped face frame
                 result = self.auth_engine.authenticate_user(
-                    frame=image_bgr,
+                    frame=cropped_face,
                     ip_address=client_ip
                 )
 
