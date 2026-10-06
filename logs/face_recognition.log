@@ -587,3 +587,802 @@
 2026-10-04 16:51:31,991 - __main__ - INFO - Starting Face Recognition System...
 2026-10-04 16:51:31,992 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
 2026-10-04 17:42:57,135 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: test_user_1
+2026-10-05 03:41:04,952 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: test_user_local
+2026-10-05 03:48:31,992 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 03:48:31,993 - __main__ - INFO - Directories created successfully
+2026-10-05 03:48:31,994 - __main__ - INFO - Initializing database manager...
+2026-10-05 03:48:32,008 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 03:48:32,013 - src.database_manager - INFO - Loaded existing FAISS index with 1 vectors
+2026-10-05 03:48:32,019 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 03:48:32,019 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 03:48:32,022 - __main__ - INFO - Database initialized - Users: 1, Embeddings: 1
+2026-10-05 03:48:32,022 - __main__ - INFO - Initializing ML models...
+2026-10-05 03:48:32,022 - __main__ - INFO - Loading face capture system...
+2026-10-05 03:48:32,160 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 03:48:32,161 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 03:48:32,161 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 03:48:32,162 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 03:48:32,162 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 03:48:33,895 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 03:48:35,317 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 03:48:35,318 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 03:48:35,350 - src.liveness_detection - WARNING - No pretrained weights loaded, using random initialization
+2026-10-05 03:48:35,354 - src.liveness_detection - INFO - LivenessDetector initialized with custom_cnn model
+2026-10-05 03:48:35,355 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 03:48:40,894 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 03:48:41,192 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 03:48:41,193 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 03:48:41,194 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 03:48:41,194 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 03:48:41,194 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 03:48:41,195 - __main__ - INFO - Initializing API server...
+2026-10-05 03:48:41,299 - src.api - INFO - FastAPI application initialized
+2026-10-05 03:48:41,299 - src.api - INFO - System components set successfully
+2026-10-05 03:48:41,300 - __main__ - INFO - API server initialized successfully
+2026-10-05 03:48:41,300 - __main__ - INFO - System initialization completed in 9.31 seconds
+2026-10-05 03:48:41,303 - src.utils - WARNING - psutil not available for memory monitoring
+2026-10-05 03:48:41,304 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 1, 'active_users': 1, 'total_embeddings': 1, 'active_embeddings': 1, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9960244628456618, 'total_authentications': 1, 'successful_authentications': 1, 'success_rate_percent': 100.0, 'faiss_index_size': 1}, 'performance': {'rss_mb': 0.0, 'vms_mb': 0.0, 'percent': 0.0}}
+2026-10-05 03:48:41,304 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 03:48:41,304 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 03:48:41,494 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 03:48:41,496 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 03:48:41,496 - __main__ - INFO - Database connections closed
+2026-10-05 03:48:41,496 - __main__ - INFO - System shutdown completed
+2026-10-05 04:02:16,017 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: test_user_local2
+2026-10-05 04:08:13,712 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: sap_001
+2026-10-05 04:08:13,982 - src.authentication - INFO - Starting user registration for: sap_001
+2026-10-05 04:08:13,995 - src.database_manager - INFO - Added user: sap_001 (Shiva)
+2026-10-05 04:08:13,996 - src.authentication - INFO - Using 1 provided frames for registration
+2026-10-05 04:08:14,362 - src.authentication - INFO - Valid embedding 1 extracted (quality: 0.989)
+2026-10-05 04:08:14,379 - src.database_manager - INFO - Added embedding d6cfbce1-8a10-4e62-8332-ae9b01b96d43 for user sap_001 (model: vggface2)
+2026-10-05 04:08:14,380 - src.authentication - INFO - User sap_001 registered successfully with 1 face samples
+2026-10-05 04:08:14,380 - src.api - INFO - User sap_001 registered successfully via frame upload
+2026-10-05 04:08:36,490 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-05 04:08:36,714 - src.authentication - INFO - Starting user authentication
+2026-10-05 04:08:36,715 - src.authentication - INFO - Using provided frame for authentication
+2026-10-05 04:08:40,078 - src.database_manager - INFO - Found 1 similar faces above threshold 0.7
+2026-10-05 04:08:40,079 - src.database_manager - INFO - User authenticated: sap_001 (similarity: 0.926)
+2026-10-05 04:08:40,092 - src.authentication - INFO - User sap_001 authenticated successfully in 3.37s
+2026-10-05 04:08:40,093 - src.api - INFO - Authentication successful for user: sap_001
+2026-10-05 04:09:44,475 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-05 04:10:02,292 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-05 04:10:29,437 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: sap_001
+2026-10-05 04:10:29,638 - src.authentication - INFO - Starting user registration for: sap_001
+2026-10-05 04:10:29,641 - src.database_manager - ERROR - Database connection error: UNIQUE constraint failed: users.user_id
+2026-10-05 04:10:29,642 - src.database_manager - ERROR - User sap_001 already exists
+2026-10-05 04:10:29,642 - src.api - WARNING - User registration failed: User already exists or database error
+2026-10-05 04:10:46,177 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-05 04:10:46,366 - src.authentication - INFO - Starting user authentication
+2026-10-05 04:10:46,367 - src.authentication - INFO - Using provided frame for authentication
+2026-10-05 04:10:49,073 - src.database_manager - INFO - Found 1 similar faces above threshold 0.7
+2026-10-05 04:10:49,074 - src.database_manager - INFO - User authenticated: sap_001 (similarity: 0.941)
+2026-10-05 04:10:49,086 - src.authentication - INFO - User sap_001 authenticated successfully in 2.71s
+2026-10-05 04:10:49,086 - src.api - INFO - Authentication successful for user: sap_001
+2026-10-05 14:30:31,963 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 14:30:31,963 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 14:30:31,963 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 14:30:31,963 - __main__ - INFO - Database connections closed
+2026-10-05 14:30:31,963 - __main__ - INFO - System shutdown completed
+2026-10-05 14:30:31,963 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 14:30:31,965 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 14:30:31,965 - __main__ - INFO - Database connections closed
+2026-10-05 14:30:31,965 - __main__ - INFO - System shutdown completed
+2026-10-05 14:35:04,949 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 14:35:04,950 - __main__ - INFO - Directories created successfully
+2026-10-05 14:35:04,950 - __main__ - INFO - Initializing database manager...
+2026-10-05 14:35:04,950 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 14:35:04,950 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 14:35:04,951 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 14:35:04,951 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 14:35:04,951 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 14:35:04,951 - __main__ - INFO - Initializing ML models...
+2026-10-05 14:35:04,951 - __main__ - INFO - Loading face capture system...
+2026-10-05 14:35:04,964 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 14:35:04,964 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 14:35:04,964 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 14:35:04,964 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 14:35:04,964 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 14:35:05,104 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 14:35:05,236 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 14:35:05,236 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 14:35:05,398 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 14:35:05,440 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 14:35:05,441 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 14:35:05,441 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 14:35:05,441 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 14:35:05,745 - httpx - INFO - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+2026-10-05 14:35:05,992 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 14:35:05,993 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 14:35:06,012 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 14:35:06,274 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 14:35:06,376 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 14:35:06,616 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 14:35:06,851 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 14:35:06,868 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 14:35:06,870 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 14:35:06,870 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 14:35:06,870 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 14:35:06,870 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 14:35:06,870 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 14:35:06,870 - __main__ - INFO - Initializing API server...
+2026-10-05 14:35:06,898 - src.api - INFO - FastAPI application initialized
+2026-10-05 14:35:06,898 - src.api - INFO - System components set successfully
+2026-10-05 14:35:06,898 - __main__ - INFO - API server initialized successfully
+2026-10-05 14:35:06,898 - __main__ - INFO - System initialization completed in 1.95 seconds
+2026-10-05 14:35:06,899 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 598.97265625, 'vms_mb': 5256.18359375, 'percent': 3.8183054649352224}}
+2026-10-05 14:35:06,899 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 14:35:06,899 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 14:35:11,625 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 14:35:11,625 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 14:35:11,625 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 14:35:11,626 - __main__ - INFO - Database connections closed
+2026-10-05 14:35:11,626 - __main__ - INFO - System shutdown completed
+2026-10-05 14:35:11,626 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 14:35:11,627 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 14:35:11,627 - __main__ - INFO - Database connections closed
+2026-10-05 14:35:11,627 - __main__ - INFO - System shutdown completed
+2026-10-05 14:35:23,657 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 14:35:23,657 - __main__ - INFO - Directories created successfully
+2026-10-05 14:35:23,657 - __main__ - INFO - Initializing database manager...
+2026-10-05 14:35:23,658 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 14:35:23,658 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 14:35:23,658 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 14:35:23,658 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 14:35:23,659 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 14:35:23,659 - __main__ - INFO - Initializing ML models...
+2026-10-05 14:35:23,659 - __main__ - INFO - Loading face capture system...
+2026-10-05 14:35:23,674 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 14:35:23,674 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 14:35:23,675 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 14:35:23,675 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 14:35:23,675 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 14:35:23,839 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 14:35:24,004 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 14:35:24,004 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 14:35:24,194 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 14:35:24,250 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 14:35:24,250 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 14:35:24,250 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 14:35:24,250 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 14:35:24,554 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 14:35:24,573 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 14:35:24,822 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 14:35:24,823 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 14:35:24,942 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 14:35:25,179 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 14:35:25,428 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 14:35:25,447 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 14:35:25,448 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 14:35:25,448 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 14:35:25,448 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 14:35:25,448 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 14:35:25,448 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 14:35:25,448 - __main__ - INFO - Initializing API server...
+2026-10-05 14:35:25,474 - src.api - INFO - FastAPI application initialized
+2026-10-05 14:35:25,474 - src.api - INFO - System components set successfully
+2026-10-05 14:35:25,474 - __main__ - INFO - API server initialized successfully
+2026-10-05 14:35:25,474 - __main__ - INFO - System initialization completed in 1.82 seconds
+2026-10-05 14:35:25,474 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 598.9375, 'vms_mb': 5256.22265625, 'percent': 3.818081352364973}}
+2026-10-05 14:35:25,474 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 14:35:25,474 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 14:35:50,152 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 14:35:50,152 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 14:35:50,152 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 14:35:50,152 - __main__ - INFO - Database connections closed
+2026-10-05 14:35:50,152 - __main__ - INFO - System shutdown completed
+2026-10-05 14:35:50,152 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 14:35:50,152 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 14:35:50,154 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 14:35:50,154 - __main__ - INFO - Database connections closed
+2026-10-05 14:35:50,154 - __main__ - INFO - System shutdown completed
+2026-10-05 14:35:50,154 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 14:35:50,154 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 14:35:50,154 - __main__ - INFO - Database connections closed
+2026-10-05 14:35:50,154 - __main__ - INFO - System shutdown completed
+2026-10-05 18:57:16,220 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 18:57:16,223 - __main__ - INFO - Directories created successfully
+2026-10-05 18:57:16,224 - __main__ - INFO - Initializing database manager...
+2026-10-05 18:57:16,230 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 18:57:16,233 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 18:57:16,238 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 18:57:16,239 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 18:57:16,243 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 18:57:16,244 - __main__ - INFO - Initializing ML models...
+2026-10-05 18:57:16,244 - __main__ - INFO - Loading face capture system...
+2026-10-05 18:57:16,362 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 18:57:16,363 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 18:57:16,363 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 18:57:16,364 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 18:57:16,364 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 18:57:17,531 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 18:57:18,482 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 18:57:18,483 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 18:57:19,410 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 18:57:19,724 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 18:57:19,728 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 18:57:19,728 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 18:57:19,729 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 18:57:20,161 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 18:57:20,196 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 18:57:20,569 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 18:57:20,572 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 19:25:34,477 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 19:25:34,477 - __main__ - INFO - Directories created successfully
+2026-10-05 19:25:34,477 - __main__ - INFO - Initializing database manager...
+2026-10-05 19:25:34,477 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 19:25:34,477 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 19:25:34,478 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 19:25:34,478 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 19:25:34,478 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 19:25:34,478 - __main__ - INFO - Initializing ML models...
+2026-10-05 19:25:34,478 - __main__ - INFO - Loading face capture system...
+2026-10-05 19:25:34,491 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 19:25:34,491 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 19:25:34,491 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 19:25:34,491 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 19:25:34,491 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 19:25:34,640 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 19:25:34,771 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 19:25:34,771 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 19:25:34,931 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 19:25:34,966 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 19:25:34,966 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 19:25:34,966 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 19:25:34,966 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 19:25:35,316 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:25:35,317 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 19:25:35,341 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 19:25:35,601 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 19:25:35,695 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 19:25:35,949 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 19:25:36,190 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:25:36,212 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 19:25:36,213 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 19:25:36,213 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 19:25:36,213 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 19:25:36,214 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 19:25:36,214 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 19:25:36,214 - __main__ - INFO - Initializing API server...
+2026-10-05 19:25:36,246 - src.api - INFO - FastAPI application initialized
+2026-10-05 19:25:36,246 - src.api - INFO - System components set successfully
+2026-10-05 19:25:36,246 - __main__ - INFO - API server initialized successfully
+2026-10-05 19:25:36,246 - __main__ - INFO - System initialization completed in 1.77 seconds
+2026-10-05 19:25:36,247 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 598.87109375, 'vms_mb': 5256.1875, 'percent': 3.8176580286211674}}
+2026-10-05 19:25:36,247 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 19:25:36,247 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 19:26:31,618 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 19:26:31,618 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:26:31,618 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:26:31,618 - __main__ - INFO - Database connections closed
+2026-10-05 19:26:31,618 - __main__ - INFO - System shutdown completed
+2026-10-05 19:26:31,618 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:26:31,621 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:26:31,621 - __main__ - INFO - Database connections closed
+2026-10-05 19:26:31,622 - __main__ - INFO - System shutdown completed
+2026-10-05 19:27:32,883 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 19:27:32,883 - __main__ - INFO - Directories created successfully
+2026-10-05 19:27:32,883 - __main__ - INFO - Initializing database manager...
+2026-10-05 19:27:32,883 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 19:27:32,884 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 19:27:32,884 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 19:27:32,884 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 19:27:32,884 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 19:27:32,884 - __main__ - INFO - Initializing ML models...
+2026-10-05 19:27:32,884 - __main__ - INFO - Loading face capture system...
+2026-10-05 19:27:32,897 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 19:27:32,897 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 19:27:32,897 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 19:27:32,897 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 19:27:32,897 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 19:27:33,036 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 19:27:33,188 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 19:27:33,188 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 19:27:33,373 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 19:27:33,410 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 19:27:33,411 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 19:27:33,411 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 19:27:33,411 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 19:27:33,747 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:27:33,748 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 19:27:33,772 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 19:27:34,022 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 19:27:34,118 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 19:27:34,356 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 19:27:34,610 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:27:34,634 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 19:27:34,635 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 19:27:34,635 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 19:27:34,635 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 19:27:34,635 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 19:27:34,635 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 19:27:34,635 - __main__ - INFO - Initializing API server...
+2026-10-05 19:27:34,659 - src.api - INFO - FastAPI application initialized
+2026-10-05 19:27:34,659 - src.api - INFO - System components set successfully
+2026-10-05 19:27:34,659 - __main__ - INFO - API server initialized successfully
+2026-10-05 19:27:34,659 - __main__ - INFO - System initialization completed in 1.78 seconds
+2026-10-05 19:27:34,660 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 598.9296875, 'vms_mb': 5256.1796875, 'percent': 3.8180315495715837}}
+2026-10-05 19:27:34,660 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 19:27:34,660 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 19:27:44,794 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 19:27:44,794 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:27:44,795 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:27:44,795 - __main__ - INFO - Database connections closed
+2026-10-05 19:27:44,795 - __main__ - INFO - System shutdown completed
+2026-10-05 19:27:44,795 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:27:44,796 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:27:44,796 - __main__ - INFO - Database connections closed
+2026-10-05 19:27:44,796 - __main__ - INFO - System shutdown completed
+2026-10-05 19:40:59,274 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 19:40:59,274 - __main__ - INFO - Directories created successfully
+2026-10-05 19:40:59,274 - __main__ - INFO - Initializing database manager...
+2026-10-05 19:40:59,274 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 19:40:59,275 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 19:40:59,275 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 19:40:59,275 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 19:40:59,275 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 19:40:59,275 - __main__ - INFO - Initializing ML models...
+2026-10-05 19:40:59,275 - __main__ - INFO - Loading face capture system...
+2026-10-05 19:40:59,287 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 19:40:59,288 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 19:40:59,288 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 19:40:59,288 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 19:40:59,288 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 19:40:59,423 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 19:40:59,550 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 19:40:59,550 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 19:40:59,705 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 19:40:59,738 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 19:40:59,739 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 19:40:59,739 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 19:40:59,739 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 19:41:00,069 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:41:00,070 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 19:41:00,091 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 19:41:00,471 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 19:41:00,559 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 19:41:00,798 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 19:41:01,052 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:41:01,075 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 19:41:01,076 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 19:41:01,077 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 19:41:01,077 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 19:41:01,077 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 19:41:01,077 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 19:41:01,077 - __main__ - INFO - Initializing API server...
+2026-10-05 19:41:01,103 - src.api - INFO - FastAPI application initialized
+2026-10-05 19:41:01,103 - src.api - INFO - System components set successfully
+2026-10-05 19:41:01,103 - __main__ - INFO - API server initialized successfully
+2026-10-05 19:41:01,103 - __main__ - INFO - System initialization completed in 1.83 seconds
+2026-10-05 19:41:01,104 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 599.15625, 'vms_mb': 5256.30859375, 'percent': 3.819475830579861}}
+2026-10-05 19:41:01,104 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 19:41:01,104 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 19:41:06,426 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 19:41:06,426 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:41:06,426 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:41:06,426 - __main__ - INFO - Database connections closed
+2026-10-05 19:41:06,426 - __main__ - INFO - System shutdown completed
+2026-10-05 19:41:06,427 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:41:06,428 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:41:06,428 - __main__ - INFO - Database connections closed
+2026-10-05 19:41:06,428 - __main__ - INFO - System shutdown completed
+2026-10-05 19:41:23,951 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 19:41:23,951 - __main__ - INFO - Directories created successfully
+2026-10-05 19:41:23,951 - __main__ - INFO - Initializing database manager...
+2026-10-05 19:41:23,952 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 19:41:23,952 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 19:41:23,953 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 19:41:23,953 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 19:41:23,953 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 19:41:23,953 - __main__ - INFO - Initializing ML models...
+2026-10-05 19:41:23,953 - __main__ - INFO - Loading face capture system...
+2026-10-05 19:41:23,966 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 19:41:23,966 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 19:41:23,966 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 19:41:23,966 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 19:41:23,966 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 19:41:24,099 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 19:41:24,227 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 19:41:24,227 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 19:41:24,389 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 19:41:24,423 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 19:41:24,423 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 19:41:24,423 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 19:41:24,423 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 19:41:24,720 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:41:24,720 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 19:41:24,742 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 19:41:24,997 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 19:41:25,083 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 19:41:25,343 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 19:41:25,583 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:41:25,607 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 19:41:25,608 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 19:41:25,608 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 19:41:25,608 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 19:41:25,608 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 19:41:25,608 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 19:41:25,608 - __main__ - INFO - Initializing API server...
+2026-10-05 19:41:25,630 - src.api - INFO - FastAPI application initialized
+2026-10-05 19:41:25,630 - src.api - INFO - System components set successfully
+2026-10-05 19:41:25,630 - __main__ - INFO - API server initialized successfully
+2026-10-05 19:41:25,630 - __main__ - INFO - System initialization completed in 1.68 seconds
+2026-10-05 19:41:25,631 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 598.91015625, 'vms_mb': 5256.22265625, 'percent': 3.8179070425881116}}
+2026-10-05 19:41:25,631 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 19:41:25,631 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 19:42:21,096 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 19:42:21,096 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:42:21,096 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:42:21,096 - __main__ - INFO - Database connections closed
+2026-10-05 19:42:21,096 - __main__ - INFO - System shutdown completed
+2026-10-05 19:42:21,096 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:42:21,129 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:42:21,130 - __main__ - INFO - Database connections closed
+2026-10-05 19:42:21,130 - __main__ - INFO - System shutdown completed
+2026-10-05 19:46:55,872 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 19:46:55,872 - __main__ - INFO - Directories created successfully
+2026-10-05 19:46:55,872 - __main__ - INFO - Initializing database manager...
+2026-10-05 19:46:55,872 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 19:46:55,872 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 19:46:55,873 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 19:46:55,873 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 19:46:55,873 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 19:46:55,873 - __main__ - INFO - Initializing ML models...
+2026-10-05 19:46:55,873 - __main__ - INFO - Loading face capture system...
+2026-10-05 19:46:55,887 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 19:46:55,887 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 19:46:55,887 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 19:46:55,887 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 19:46:55,887 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 19:46:56,047 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 19:46:56,181 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 19:46:56,181 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 19:46:56,348 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 19:46:56,384 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 19:46:56,384 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 19:46:56,384 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 19:46:56,384 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 19:46:56,752 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:46:56,753 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 19:46:56,777 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 19:46:57,043 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 19:46:57,134 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 19:46:57,423 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 19:46:57,661 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 19:46:57,684 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 19:46:57,686 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 19:46:57,686 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 19:46:57,686 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 19:46:57,686 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 19:46:57,686 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 19:46:57,686 - __main__ - INFO - Initializing API server...
+2026-10-05 19:46:57,710 - src.api - INFO - FastAPI application initialized
+2026-10-05 19:46:57,710 - src.api - INFO - System components set successfully
+2026-10-05 19:46:57,710 - __main__ - INFO - API server initialized successfully
+2026-10-05 19:46:57,710 - __main__ - INFO - System initialization completed in 1.84 seconds
+2026-10-05 19:46:57,711 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 598.91796875, 'vms_mb': 5256.17578125, 'percent': 3.8179568453815005}}
+2026-10-05 19:46:57,711 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 19:46:57,711 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 19:47:22,989 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 19:47:22,989 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:47:22,990 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:47:22,990 - __main__ - INFO - Database connections closed
+2026-10-05 19:47:22,990 - __main__ - INFO - System shutdown completed
+2026-10-05 19:47:22,990 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 19:47:22,992 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 19:47:22,992 - __main__ - INFO - Database connections closed
+2026-10-05 19:47:22,992 - __main__ - INFO - System shutdown completed
+2026-10-05 23:57:44,445 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-05 23:57:44,446 - __main__ - INFO - Directories created successfully
+2026-10-05 23:57:44,446 - __main__ - INFO - Initializing database manager...
+2026-10-05 23:57:44,450 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-05 23:57:44,452 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-05 23:57:44,456 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-05 23:57:44,456 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-05 23:57:44,458 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-05 23:57:44,458 - __main__ - INFO - Initializing ML models...
+2026-10-05 23:57:44,459 - __main__ - INFO - Loading face capture system...
+2026-10-05 23:57:44,572 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-05 23:57:44,573 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-05 23:57:44,573 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-05 23:57:44,574 - __main__ - INFO - Loading embedding extraction model...
+2026-10-05 23:57:44,574 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-05 23:57:45,739 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-05 23:57:47,153 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-05 23:57:47,154 - __main__ - INFO - Loading liveness detection model...
+2026-10-05 23:57:48,003 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-05 23:57:48,342 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-05 23:57:48,345 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-05 23:57:48,345 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-05 23:57:48,346 - __main__ - INFO - Loading deepfake detection model...
+2026-10-05 23:57:48,748 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 23:57:48,751 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-05 23:57:48,780 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-05 23:57:49,152 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-05 23:57:50,076 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-05 23:57:50,361 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-05 23:57:50,639 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-05 23:57:50,676 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-05 23:57:50,684 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-05 23:57:50,685 - __main__ - INFO - All ML models initialized successfully
+2026-10-05 23:57:50,686 - __main__ - INFO - Initializing authentication engine...
+2026-10-05 23:57:50,686 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-05 23:57:50,687 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-05 23:57:50,688 - __main__ - INFO - Initializing API server...
+2026-10-05 23:57:50,896 - src.api - INFO - FastAPI application initialized
+2026-10-05 23:57:50,897 - src.api - INFO - System components set successfully
+2026-10-05 23:57:50,897 - __main__ - INFO - API server initialized successfully
+2026-10-05 23:57:50,897 - __main__ - INFO - System initialization completed in 6.46 seconds
+2026-10-05 23:57:50,901 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 598.92578125, 'vms_mb': 5256.23046875, 'percent': 3.8180066481748898}}
+2026-10-05 23:57:50,902 - __main__ - INFO - Starting Face Recognition System...
+2026-10-05 23:57:50,902 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-05 23:59:19,550 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-05 23:59:19,551 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 23:59:19,553 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 23:59:19,554 - __main__ - INFO - Database connections closed
+2026-10-05 23:59:19,555 - __main__ - INFO - System shutdown completed
+2026-10-05 23:59:19,557 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-05 23:59:19,587 - src.database_manager - INFO - Database manager closed successfully
+2026-10-05 23:59:19,587 - __main__ - INFO - Database connections closed
+2026-10-05 23:59:19,588 - __main__ - INFO - System shutdown completed
+2026-10-06 00:00:19,561 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-06 00:00:19,562 - __main__ - INFO - Directories created successfully
+2026-10-06 00:00:19,563 - __main__ - INFO - Initializing database manager...
+2026-10-06 00:00:19,566 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-06 00:00:19,567 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-06 00:00:19,570 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-06 00:00:19,570 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-06 00:00:19,572 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-06 00:00:19,572 - __main__ - INFO - Initializing ML models...
+2026-10-06 00:00:19,573 - __main__ - INFO - Loading face capture system...
+2026-10-06 00:00:19,679 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-06 00:00:19,679 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-06 00:00:19,680 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-06 00:00:19,680 - __main__ - INFO - Loading embedding extraction model...
+2026-10-06 00:00:19,681 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-06 00:00:20,847 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-06 00:00:21,947 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-06 00:00:21,948 - __main__ - INFO - Loading liveness detection model...
+2026-10-06 00:00:22,750 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-06 00:00:23,101 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-06 00:00:23,105 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-06 00:00:23,105 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-06 00:00:23,105 - __main__ - INFO - Loading deepfake detection model...
+2026-10-06 00:00:23,529 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 00:00:23,532 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-06 00:00:23,560 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-06 00:00:23,896 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-06 00:00:24,807 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-06 00:00:25,071 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-06 00:00:25,337 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 00:00:25,366 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-06 00:00:25,371 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-06 00:00:25,372 - __main__ - INFO - All ML models initialized successfully
+2026-10-06 00:00:25,372 - __main__ - INFO - Initializing authentication engine...
+2026-10-06 00:00:25,372 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-06 00:00:25,373 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-06 00:00:25,373 - __main__ - INFO - Initializing API server...
+2026-10-06 00:00:25,550 - src.api - INFO - FastAPI application initialized
+2026-10-06 00:00:25,551 - src.api - INFO - System components set successfully
+2026-10-06 00:00:25,551 - __main__ - INFO - API server initialized successfully
+2026-10-06 00:00:25,551 - __main__ - INFO - System initialization completed in 5.99 seconds
+2026-10-06 00:00:25,555 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 599.1015625, 'vms_mb': 5256.22265625, 'percent': 3.8191272110261396}}
+2026-10-06 00:00:25,556 - __main__ - INFO - Starting Face Recognition System...
+2026-10-06 00:00:25,557 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-06 00:01:16,847 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-06 00:01:16,847 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-06 00:01:16,849 - src.database_manager - INFO - Database manager closed successfully
+2026-10-06 00:01:16,850 - __main__ - INFO - Database connections closed
+2026-10-06 00:01:16,851 - __main__ - INFO - System shutdown completed
+2026-10-06 00:01:16,853 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-06 00:01:16,855 - src.database_manager - INFO - Database manager closed successfully
+2026-10-06 00:01:16,856 - __main__ - INFO - Database connections closed
+2026-10-06 00:01:16,856 - __main__ - INFO - System shutdown completed
+2026-10-06 00:02:44,310 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-06 00:02:44,311 - __main__ - INFO - Directories created successfully
+2026-10-06 00:02:44,311 - __main__ - INFO - Initializing database manager...
+2026-10-06 00:02:44,320 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-06 00:02:44,321 - src.database_manager - INFO - Created new FAISS index: IndexFlatIP
+2026-10-06 00:02:44,325 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-06 00:02:44,325 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-06 00:02:44,328 - __main__ - INFO - Database initialized - Users: 0, Embeddings: 0
+2026-10-06 00:02:44,328 - __main__ - INFO - Initializing ML models...
+2026-10-06 00:02:44,328 - __main__ - INFO - Loading face capture system...
+2026-10-06 00:02:44,450 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-06 00:02:44,450 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-06 00:02:44,451 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-06 00:02:44,451 - __main__ - INFO - Loading embedding extraction model...
+2026-10-06 00:02:44,452 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-06 00:02:45,708 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-06 00:02:46,600 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-06 00:02:46,601 - __main__ - INFO - Loading liveness detection model...
+2026-10-06 00:02:47,513 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-06 00:02:47,913 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-06 00:02:47,916 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-06 00:02:47,916 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-06 00:02:47,917 - __main__ - INFO - Loading deepfake detection model...
+2026-10-06 00:02:48,331 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 00:02:48,334 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-06 00:02:48,362 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-06 00:02:48,756 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-06 00:02:49,653 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-06 00:02:49,932 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-06 00:02:50,197 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 00:02:50,229 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-06 00:02:50,234 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-06 00:02:50,235 - __main__ - INFO - All ML models initialized successfully
+2026-10-06 00:02:50,235 - __main__ - INFO - Initializing authentication engine...
+2026-10-06 00:02:50,235 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-06 00:02:50,235 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-06 00:02:50,236 - __main__ - INFO - Initializing API server...
+2026-10-06 00:02:50,421 - src.api - INFO - FastAPI application initialized
+2026-10-06 00:02:50,421 - src.api - INFO - System components set successfully
+2026-10-06 00:02:50,421 - __main__ - INFO - API server initialized successfully
+2026-10-06 00:02:50,422 - __main__ - INFO - System initialization completed in 6.12 seconds
+2026-10-06 00:02:50,427 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 0, 'active_users': 0, 'total_embeddings': 0, 'active_embeddings': 0, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.0, 'total_authentications': 0, 'successful_authentications': 0, 'success_rate_percent': 0.0, 'faiss_index_size': 0}, 'performance': {'rss_mb': 598.8828125, 'vms_mb': 5256.23046875, 'percent': 3.8177327328112507}}
+2026-10-06 00:02:50,427 - __main__ - INFO - Starting Face Recognition System...
+2026-10-06 00:02:50,428 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-06 00:03:02,955 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: e2e_user_001
+2026-10-06 00:03:12,280 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: probe_fresh_live
+2026-10-06 00:03:12,372 - src.authentication - INFO - Starting user registration for: probe_fresh_live
+2026-10-06 00:03:12,376 - src.database_manager - INFO - Added user: probe_fresh_live (Probe)
+2026-10-06 00:03:12,377 - src.authentication - INFO - Using 1 provided frames for registration
+2026-10-06 00:03:12,629 - src.authentication - INFO - Valid embedding 1 extracted (quality: 0.994)
+2026-10-06 00:03:12,634 - src.database_manager - INFO - Added embedding 363549b1-f5b0-4d6b-be1e-50ff56ae14c9 for user probe_fresh_live (model: vggface2)
+2026-10-06 00:03:12,635 - src.authentication - INFO - User probe_fresh_live registered successfully with 1 face samples
+2026-10-06 00:03:12,635 - src.api - INFO - User probe_fresh_live registered successfully via frame upload
+2026-10-06 00:03:12,695 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: probe_fresh_test
+2026-10-06 00:03:12,856 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: probe_haar_test
+2026-10-06 00:03:12,997 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: probe_image_F1
+2026-10-06 00:03:13,127 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: probe_live_crop
+2026-10-06 00:03:13,141 - src.authentication - INFO - Starting user registration for: probe_live_crop
+2026-10-06 00:03:13,145 - src.database_manager - INFO - Added user: probe_live_crop (Probe)
+2026-10-06 00:03:13,146 - src.authentication - INFO - Using 1 provided frames for registration
+2026-10-06 00:03:13,373 - src.authentication - INFO - Valid embedding 1 extracted (quality: 0.969)
+2026-10-06 00:03:13,378 - src.database_manager - INFO - Added embedding 947857f6-86a0-42b6-84ce-098468ac8b31 for user probe_live_crop (model: vggface2)
+2026-10-06 00:03:13,379 - src.authentication - INFO - User probe_live_crop registered successfully with 1 face samples
+2026-10-06 00:03:13,379 - src.api - INFO - User probe_live_crop registered successfully via frame upload
+2026-10-06 00:03:26,863 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: probe_fresh_live
+2026-10-06 00:03:26,967 - src.authentication - INFO - Starting user registration for: probe_fresh_live
+2026-10-06 00:03:26,969 - src.database_manager - ERROR - Database connection error: UNIQUE constraint failed: users.user_id
+2026-10-06 00:03:26,970 - src.database_manager - ERROR - User probe_fresh_live already exists
+2026-10-06 00:03:26,970 - src.api - WARNING - User registration failed: User already exists or database error
+2026-10-06 00:03:27,019 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-06 00:03:27,111 - src.authentication - INFO - Starting user authentication
+2026-10-06 00:03:27,112 - src.authentication - INFO - Using provided frame for authentication
+2026-10-06 00:03:29,255 - src.api - WARNING - Authentication failed: Liveness check failed - potential spoofing detected
+2026-10-06 00:08:49,428 - src.api - INFO - User registration (frame) request from 127.0.0.1 for user: probe_null_check
+2026-10-06 00:08:49,446 - src.authentication - INFO - Starting user registration for: probe_null_check
+2026-10-06 00:08:49,451 - src.database_manager - INFO - Added user: probe_null_check (Null Check)
+2026-10-06 00:08:49,452 - src.authentication - INFO - Using 1 provided frames for registration
+2026-10-06 00:08:49,942 - src.authentication - INFO - Valid embedding 1 extracted (quality: 0.969)
+2026-10-06 00:08:49,948 - src.database_manager - INFO - Added embedding 2f47ad89-41dd-4069-84d2-96869a803cc5 for user probe_null_check (model: vggface2)
+2026-10-06 00:08:49,949 - src.authentication - INFO - User probe_null_check registered successfully with 1 face samples
+2026-10-06 00:08:49,949 - src.api - INFO - User probe_null_check registered successfully via frame upload
+2026-10-06 00:08:50,009 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-06 00:08:50,114 - src.authentication - INFO - Starting user authentication
+2026-10-06 00:08:50,115 - src.authentication - INFO - Using provided frame for authentication
+2026-10-06 00:08:52,167 - src.api - WARNING - Authentication failed: Liveness check failed - potential spoofing detected
+2026-10-06 00:13:41,520 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-06 00:13:41,520 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-06 00:13:41,521 - src.database_manager - INFO - Database manager closed successfully
+2026-10-06 00:13:41,521 - __main__ - INFO - Database connections closed
+2026-10-06 00:13:41,522 - __main__ - INFO - System shutdown completed
+2026-10-06 00:13:41,523 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-06 00:13:41,524 - src.database_manager - INFO - Database manager closed successfully
+2026-10-06 00:13:41,524 - __main__ - INFO - Database connections closed
+2026-10-06 00:13:41,524 - __main__ - INFO - System shutdown completed
+2026-10-06 00:17:49,067 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-06 00:17:49,068 - __main__ - INFO - Directories created successfully
+2026-10-06 00:17:49,068 - __main__ - INFO - Initializing database manager...
+2026-10-06 00:17:49,072 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-06 00:17:49,073 - src.database_manager - INFO - Loaded existing FAISS index with 3 vectors
+2026-10-06 00:17:49,076 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-06 00:17:49,076 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-06 00:17:49,078 - __main__ - INFO - Database initialized - Users: 3, Embeddings: 3
+2026-10-06 00:17:49,078 - __main__ - INFO - Initializing ML models...
+2026-10-06 00:17:49,078 - __main__ - INFO - Loading face capture system...
+2026-10-06 00:17:49,187 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-06 00:17:49,187 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-06 00:17:49,188 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-06 00:17:49,188 - __main__ - INFO - Loading embedding extraction model...
+2026-10-06 00:17:49,189 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-06 00:17:50,270 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-06 00:17:51,545 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-06 00:17:51,546 - __main__ - INFO - Skipping liveness detection model (memory optimization)
+2026-10-06 00:17:51,546 - __main__ - INFO - Skipping deepfake detection model (memory optimization)
+2026-10-06 00:17:51,547 - __main__ - INFO - All ML models initialized successfully
+2026-10-06 00:17:51,547 - __main__ - INFO - Initializing authentication engine...
+2026-10-06 00:17:51,548 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-06 00:17:51,548 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-06 00:17:51,549 - __main__ - INFO - Initializing API server...
+2026-10-06 00:17:52,210 - src.api - INFO - FastAPI application initialized
+2026-10-06 00:17:52,211 - src.api - INFO - System components set successfully
+2026-10-06 00:17:52,211 - __main__ - INFO - API server initialized successfully
+2026-10-06 00:17:52,211 - __main__ - INFO - System initialization completed in 3.15 seconds
+2026-10-06 00:17:52,216 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': False, 'deepfake_detector': False, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 3, 'active_users': 3, 'total_embeddings': 3, 'active_embeddings': 3, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9775108826323265, 'total_authentications': 2, 'successful_authentications': 0, 'success_rate_percent': 0.0, 'faiss_index_size': 3}, 'performance': {'rss_mb': 586.5390625, 'vms_mb': 4626.125, 'percent': 3.7390443192568226}}
+2026-10-06 00:17:52,216 - __main__ - INFO - Starting Face Recognition System...
+2026-10-06 00:17:52,217 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001
+2026-10-06 00:18:07,758 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-06 00:18:07,893 - src.authentication - INFO - Starting user authentication
+2026-10-06 00:18:07,894 - src.authentication - INFO - Using provided frame for authentication
+2026-10-06 00:18:07,897 - src.authentication - INFO - Skipping liveness detection (model not loaded)
+2026-10-06 00:18:07,897 - src.authentication - INFO - Skipping deepfake detection (model not loaded)
+2026-10-06 00:18:08,503 - src.database_manager - INFO - Found 1 similar faces above threshold 0.7
+2026-10-06 00:18:08,504 - src.database_manager - INFO - User authenticated: probe_fresh_live (similarity: 1.000)
+2026-10-06 00:18:08,545 - src.authentication - INFO - User probe_fresh_live authenticated successfully in 0.64s
+2026-10-06 00:18:08,548 - src.api - INFO - Authentication successful for user: probe_fresh_live
+2026-10-06 00:18:23,438 - src.database_manager - INFO - Deleted user probe_fresh_live and 1 embeddings
+2026-10-06 00:18:23,439 - src.database_manager - INFO - Rebuilding FAISS index from active SQLite embeddings
+2026-10-06 00:18:23,444 - src.database_manager - INFO - FAISS index rebuilt successfully with 2 vectors
+2026-10-06 00:18:23,444 - src.database_manager - INFO - Rebuilt FAISS index after deleting user probe_fresh_live
+2026-10-06 00:18:23,444 - src.api - INFO - User probe_fresh_live deleted successfully
+2026-10-06 00:18:23,493 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-06 00:18:23,584 - src.authentication - INFO - Starting user authentication
+2026-10-06 00:18:23,584 - src.authentication - INFO - Using provided frame for authentication
+2026-10-06 00:18:23,587 - src.authentication - INFO - Skipping liveness detection (model not loaded)
+2026-10-06 00:18:23,587 - src.authentication - INFO - Skipping deepfake detection (model not loaded)
+2026-10-06 00:18:23,959 - src.database_manager - INFO - Found 0 similar faces above threshold 0.7
+2026-10-06 00:18:23,960 - src.database_manager - INFO - No matching user found or user inactive
+2026-10-06 00:18:23,963 - src.api - WARNING - Authentication failed: No matching user found
+2026-10-06 00:18:24,018 - src.api - INFO - Authentication (frame) request from 127.0.0.1
+2026-10-06 00:18:24,032 - src.authentication - INFO - Starting user authentication
+2026-10-06 00:18:24,033 - src.authentication - INFO - Using provided frame for authentication
+2026-10-06 00:18:24,037 - src.authentication - INFO - Skipping liveness detection (model not loaded)
+2026-10-06 00:18:24,038 - src.authentication - INFO - Skipping deepfake detection (model not loaded)
+2026-10-06 00:18:24,272 - src.database_manager - INFO - Found 1 similar faces above threshold 0.7
+2026-10-06 00:18:24,273 - src.database_manager - INFO - User authenticated: probe_live_crop (similarity: 1.000)
+2026-10-06 00:18:24,276 - src.authentication - INFO - User probe_live_crop authenticated successfully in 0.24s
+2026-10-06 00:18:24,277 - src.api - INFO - Authentication successful for user: probe_live_crop
+2026-10-06 00:18:41,708 - __main__ - INFO - Received signal 15, initiating shutdown...
+2026-10-06 00:18:41,709 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-06 00:18:41,710 - src.database_manager - INFO - Database manager closed successfully
+2026-10-06 00:18:41,711 - __main__ - INFO - Database connections closed
+2026-10-06 00:18:41,711 - __main__ - INFO - System shutdown completed
+2026-10-06 00:18:41,713 - __main__ - INFO - Shutting down Face Recognition System...
+2026-10-06 00:18:41,714 - src.database_manager - INFO - Database manager closed successfully
+2026-10-06 00:18:41,715 - __main__ - INFO - Database connections closed
+2026-10-06 00:18:41,715 - __main__ - INFO - System shutdown completed
+2026-10-06 00:20:44,978 - __main__ - INFO - File logging enabled: logs/face_recognition.log
+2026-10-06 00:20:44,980 - __main__ - INFO - Directories created successfully
+2026-10-06 00:20:44,980 - __main__ - INFO - Initializing database manager...
+2026-10-06 00:20:44,983 - src.database_manager - INFO - SQLite database initialized successfully
+2026-10-06 00:20:44,987 - src.database_manager - INFO - Loaded existing FAISS index with 2 vectors
+2026-10-06 00:20:44,990 - src.database_manager - INFO - Startup consistency check passed: FAISS index is consistent with SQLite.
+2026-10-06 00:20:44,991 - src.database_manager - INFO - DatabaseManager initialized with embedding dim: 512, model: vggface2
+2026-10-06 00:20:44,993 - __main__ - INFO - Database initialized - Users: 2, Embeddings: 2
+2026-10-06 00:20:44,994 - __main__ - INFO - Initializing ML models...
+2026-10-06 00:20:44,994 - __main__ - INFO - Loading face capture system...
+2026-10-06 00:20:45,107 - src.face_processor - WARNING - Using Haar Cascade fallback for face detection
+2026-10-06 00:20:45,108 - src.face_processor - INFO - FaceProcessor initialized with device: cpu
+2026-10-06 00:20:45,108 - src.face_capture - INFO - FaceCapture initialized with device: cpu
+2026-10-06 00:20:45,109 - __main__ - INFO - Loading embedding extraction model...
+2026-10-06 00:20:45,109 - src.embedding_extraction - INFO - Loading InceptionResnetV1 (pretrained=vggface2)...
+2026-10-06 00:20:46,232 - src.models.inception_resnet_v1 - INFO - Loading pretrained 'vggface2' weights from /home/saptak/.cache/torch/hub/checkpoints/20180402-114759-vggface2.pt
+2026-10-06 00:20:47,244 - src.embedding_extraction - INFO - EmbeddingExtractor initialized with model: vggface2, device: cpu, pretrained: True
+2026-10-06 00:20:47,245 - __main__ - INFO - Loading liveness detection model...
+2026-10-06 00:20:47,977 - src.liveness_detection - INFO - Loaded 2.7_80x80_MiniFASNetV2 (strict=True, 334 params)
+2026-10-06 00:20:48,265 - src.liveness_detection - INFO - Loaded 4_0_0_80x80_MiniFASNetV1SE (strict=True, 370 params)
+2026-10-06 00:20:48,269 - src.liveness_detection - INFO - SilentFaceEnsembleDetector initialized with 2 models
+2026-10-06 00:20:48,270 - src.liveness_detection - INFO - SilentFaceLivenessDetector (ensemble) initialized: weights_loaded=True
+2026-10-06 00:20:48,271 - __main__ - INFO - Loading deepfake detection model...
+2026-10-06 00:20:48,672 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 00:20:48,676 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-06 00:20:48,705 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fconfig.json=&etag=%2221c61d3f8f3e50137a8c5fdd5bc9b085e286315a%22 "HTTP/1.1 200 OK"
+2026-10-06 00:20:49,073 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-10-06 00:20:50,034 - src.deepfake_detection - WARNING - No fine-tuned weights loaded, using pretrained ViT only
+2026-10-06 00:20:50,331 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-10-06 00:20:50,582 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/google/vit-base-patch16-224/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 00:20:50,612 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/vit-base-patch16-224/3f49326eb077187dfe1c2a2bb15fbd74e6ab91e3/preprocessor_config.json?%2Fgoogle%2Fvit-base-patch16-224%2Fresolve%2Fmain%2Fpreprocessor_config.json=&etag=%2270fbc148eb26a06bac351d46fddc0a23037b4ce4%22 "HTTP/1.1 200 OK"
+2026-10-06 00:20:50,618 - src.deepfake_detection - INFO - DeepfakeDetector initialized with google/vit-base-patch16-224
+2026-10-06 00:20:50,619 - __main__ - INFO - All ML models initialized successfully
+2026-10-06 00:20:50,619 - __main__ - INFO - Initializing authentication engine...
+2026-10-06 00:20:50,619 - src.authentication - INFO - AuthenticationEngine initialized
+2026-10-06 00:20:50,619 - __main__ - INFO - Authentication engine initialized successfully
+2026-10-06 00:20:50,620 - __main__ - INFO - Initializing API server...
+2026-10-06 00:20:50,810 - src.api - INFO - FastAPI application initialized
+2026-10-06 00:20:50,810 - src.api - INFO - System components set successfully
+2026-10-06 00:20:50,811 - __main__ - INFO - API server initialized successfully
+2026-10-06 00:20:50,811 - __main__ - INFO - System initialization completed in 5.84 seconds
+2026-10-06 00:20:50,815 - __main__ - INFO - System status: {'initialized': True, 'running': False, 'components': {'face_capture': True, 'embedding_extractor': True, 'liveness_detector': True, 'deepfake_detector': True, 'database_manager': True, 'auth_engine': True, 'api': True}, 'database_stats': {'total_users': 2, 'active_users': 2, 'total_embeddings': 2, 'active_embeddings': 2, 'archived_embeddings': 0, 'active_embedding_model': 'vggface2', 'avg_embedding_quality': 0.9924233833836152, 'total_authentications': 3, 'successful_authentications': 3, 'success_rate_percent': 100.0, 'faiss_index_size': 2}, 'performance': {'rss_mb': 599.109375, 'vms_mb': 5256.2265625, 'percent': 3.819177013819528}}
+2026-10-06 00:20:50,815 - __main__ - INFO - Starting Face Recognition System...
+2026-10-06 00:20:50,816 - src.api - INFO - Starting Face Recognition API server on 0.0.0.0:8001

@@ -10,8 +10,10 @@ models:
   min_face_size: 20
   embedding_model: "vggface2"
   embedding_dim: 512
-  liveness_model_type: "custom_cnn"
-  liveness_input_size: 64
+  liveness_model_type: "custom_cnn"  # Legacy: "custom_cnn", "mobilenet". New: "MiniFASNetV1", "MiniFASNetV2", "MiniFASNetV1SE", "MiniFASNetV2SE"
+  liveness_model_variant: "MiniFASNetV2"  # MiniFASNetV1, MiniFASNetV2, MiniFASNetV1SE, MiniFASNetV2SE
+  liveness_model_path: ""  # override with FACE_RECOGNITION_LIVENESS_MODEL_PATH
+  liveness_input_size: 80  # 64 for legacy, 80 for Silent-Face models
   liveness_threshold: 0.5
   deepfake_model: "google/vit-base-patch16-224"
   deepfake_image_size: 224

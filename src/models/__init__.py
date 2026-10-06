@@ -1,7 +1,23 @@
 """
-Face Recognition Neural Network Models.
+Models package for Face Recognition with Anti-Spoofing
 """
 
-from src.models.inception_resnet_v1 import InceptionResnetV1, load_weights
+from src.models.mini_fas_net import (
+    MiniFASNetV1,
+    MiniFASNetV2,
+    MiniFASNetV1SE,
+    MiniFASNetV2SE,
+    MODEL_VARIANTS,
+    PRETRAINED_URLS,
+    MODEL_FILENAME_TO_VARIANT,
+)
 
-__all__ = ["InceptionResnetV1", "load_weights"]
+__all__ = [
+    'MiniFASNetV1',
+    'MiniFASNetV2',
+    'MiniFASNetV1SE',
+    'MiniFASNetV2SE',
+    'MODEL_VARIANTS',
+    'PRETRAINED_URLS',
+    'MODEL_FILENAME_TO_VARIANT',
+]

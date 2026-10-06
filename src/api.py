@@ -191,8 +191,14 @@ class FaceRecognitionAPI:
                 }
                 
                 # Optional components - report actual state: True if loaded, False if failed, "skipped" if intentionally disabled
-                liveness_healthy = self.liveness_detector is not None
-                deepfake_healthy = self.deepfake_detector is not None
+                liveness_healthy = (
+                    self.liveness_detector is not None 
+                    and getattr(self.liveness_detector, 'weights_loaded', False)
+                )
+                deepfake_healthy = (
+                    self.deepfake_detector is not None 
+                    and getattr(self.deepfake_detector, 'weights_loaded', False)
+                )
                 
                 components_status = {
                     **core_components,

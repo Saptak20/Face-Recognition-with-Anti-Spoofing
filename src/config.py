@@ -33,8 +33,10 @@ class ModelConfig:
     embedding_dim: int = 512
     
     # Liveness detection
-    liveness_model_type: str = 'custom_cnn'
-    liveness_input_size: int = 64
+    liveness_model_type: str = 'custom_cnn'  # Legacy: "custom_cnn", "mobilenet". New: "MiniFASNetV1", "MiniFASNetV2", "MiniFASNetV1SE", "MiniFASNetV2SE"
+    liveness_model_variant: str = 'MiniFASNetV2'  # MiniFASNetV1, MiniFASNetV2, MiniFASNetV1SE, MiniFASNetV2SE
+    liveness_model_path: str = ''  # Path to pretrained .pth file, override with FACE_RECOGNITION_LIVENESS_MODEL_PATH
+    liveness_input_size: int = 80  # 64 for legacy models, 80 for Silent-Face models
     liveness_threshold: float = 0.5
     
     # Deepfake detection
@@ -298,7 +300,11 @@ class ConfigManager:
                 f"{self._env_prefix}DEVICE": ["models", "device"],
                 f"{self._env_prefix}EMBEDDING_MODEL": ["models", "embedding_model"],
                 f"{self._env_prefix}EMBEDDING_DIM": ["models", "embedding_dim"],
+                f"{self._env_prefix}LIVENESS_MODEL_TYPE": ["models", "liveness_model_type"],
+                f"{self._env_prefix}LIVENESS_MODEL_VARIANT": ["models", "liveness_model_variant"],
+                f"{self._env_prefix}LIVENESS_MODEL_PATH": ["models", "liveness_model_path"],
                 f"{self._env_prefix}LIVENESS_THRESHOLD": ["models", "liveness_threshold"],
+                f"{self._env_prefix}LIVENESS_INPUT_SIZE": ["models", "liveness_input_size"],
                 f"{self._env_prefix}DEEPFAKE_THRESHOLD": ["models", "deepfake_threshold"],
                 f"{self._env_prefix}SKIP_OPTIONAL_MODELS": ["models", "skip_optional_models"],
                 

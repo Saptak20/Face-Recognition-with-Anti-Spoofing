@@ -139,11 +139,17 @@ def mock_components():
     mock_fc = Mock()
     mock_fc.detect_faces.return_value = [{'bbox': np.array([10, 10, 100, 100]), 'confidence': 0.95}]
     mock_fc.extract_face.return_value = np.zeros((160, 160, 3), dtype=np.uint8)
+    
+    mock_liveness = Mock()
+    mock_liveness.weights_loaded = True
+    mock_deepfake = Mock()
+    mock_deepfake.weights_loaded = True
+    
     return {
         'face_capture': mock_fc,
         'embedding_extractor': Mock(),
-        'liveness_detector': Mock(),
-        'deepfake_detector': Mock(),
+        'liveness_detector': mock_liveness,
+        'deepfake_detector': mock_deepfake,
         'database_manager': Mock(),
         'auth_engine': Mock()
     }
@@ -245,7 +251,7 @@ class TestRootAndHealthEndpoints:
         assert data["status"] == "healthy"
 
     def test_health_check_optional_models_loaded(self):
-        """Health check reports liveness/deepfake as true when models are loaded."""
+        """Health check reports liveness/deepfake as true when models are loaded with weights."""
         api = FaceRecognitionAPI({
             'allowed_origins': ['*'],
             'api_key_required': False
@@ -255,11 +261,17 @@ class TestRootAndHealthEndpoints:
         mock_fc.detect_faces.return_value = [{'bbox': [10, 10, 100, 100], 'confidence': 0.95}]
         mock_fc.extract_face.return_value = [[[0]*3]*160]*160
         
+        # Create mocks with weights_loaded=True to simulate loaded models
+        mock_liveness = Mock()
+        mock_liveness.weights_loaded = True
+        mock_deepfake = Mock()
+        mock_deepfake.weights_loaded = True
+        
         api.set_components(
             face_capture=mock_fc,
             embedding_extractor=Mock(),
-            liveness_detector=Mock(),  # Loaded
-            deepfake_detector=Mock(),  # Loaded
+            liveness_detector=mock_liveness,
+            deepfake_detector=mock_deepfake,
             database_manager=Mock(),
             auth_engine=Mock()
         )

@@ -15,7 +15,7 @@ try:
     from src.config import ConfigManager
     from src.face_capture import FaceCapture
     from src.embedding_extraction import EmbeddingExtractor
-    from src.liveness_detection import LivenessDetector
+    from src.liveness_detection import SilentFaceLivenessDetector
     from src.deepfake_detection import DeepfakeDetector
     from src.database_manager import DatabaseManager
     from src.authentication import AuthenticationEngine
@@ -252,8 +252,9 @@ class FaceRecognitionSystem:
             # Initialize liveness detector
             if not self.config.models.skip_optional_models:
                 logger.info("Loading liveness detection model...")
-                self.liveness_detector = LivenessDetector(
+                self.liveness_detector = SilentFaceLivenessDetector(
                     model_type=self.config.models.liveness_model_type,
+                    model_path=self.config.models.liveness_model_path or None,
                     device=self.config.models.device,
                     input_size=self.config.models.liveness_input_size,
                     threshold=self.config.models.liveness_threshold
